@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Casa Macondo - Bienvenidos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@500;600;700;800&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/index.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav-menu nav-left">
+        <a href="#actividades">Actividades</a>
+        <a href="#como-llegar">¿Cómo llegar?</a>
+        <a href="#alojamiento">Alojamiento</a>
+        <a href="#tienda">Tienda</a>
+      </nav>
+
+      <div class="logo">
+        <a href="#"><img src="img/LogoGrande.png" alt="Casa Macondo Logo" /></a>
+      </div>
+
+      <nav class="nav-menu nav-right">
+        <a href="#contacto">Contacto</a>
+        <button class="btn-reservar">Reservar</button>
+        <a href="#menu" class="menu-toggle">
+          <svg class="menu-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+          MENÚ
+        </a>
+      </nav>
+    </header>
+
+    <main class="hero-container">
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <h1 class="hero-title">Bienvenidos a Casa Macondo</h1>
+        
+        <form class="booking-search-bar" id="bookingForm" onsubmit="event.preventDefault(); alert('Buscando disponibilidad...');">
+          <!-- Check-in Field -->
+          <div class="booking-field date-field" id="Field_ida">
+            <span class="field-value" id="Val_ida">Abr 25, 2026</span>
+            <input type="date" id="Input_ida" class="hidden-date-input" />
+          </div>
+
+          <!-- Arrow -->
+          <div class="arrow-container">
+            <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" width="60" height="24" viewBox="0 0 60 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="55" y2="12"></line>
+              <polyline points="48 5 55 12 48 19"></polyline>
+            </svg>
+          </div>
+
+          <!-- Check-out Field -->
+          <div class="booking-field date-field" id="Field_regreso">
+            <span class="field-value" id="Val_regreso">Abr 25, 2026</span>
+            <input type="date" id="Input_regreso" class="hidden-date-input" />
+          </div>
+
+          <!-- Separator Line -->
+          <div class="vertical-line"></div>
+
+          <!-- Promo Code Field -->
+          <div class="booking-field promo-field">
+            <input type="text" placeholder="Codigo promocional" id="Promo_code" class="promo-input" />
+          </div>
+
+          <!-- Search Button -->
+          <button type="submit" class="btn-buscar" aria-label="Buscar Reservas">
+            <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </button>
+        </form>
+      </div>
+    </main>
+
+    <!-- Script for custom interactive date selection -->
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const checkinInput = document.getElementById('Input_ida');
+        const checkoutInput = document.getElementById('Input_regreso');
+        const checkinVal = document.getElementById('Val_ida');
+        const checkoutVal = document.getElementById('Val_regreso');
+        const checkinField = document.getElementById('Field_ida');
+        const checkinFieldRegreso = document.getElementById('Field_regreso');
+
+        // Helper to format Date to "MMM DD, YYYY" in Spanish
+        function formatSpanishDate(dateString) {
+          if (!dateString) return '';
+          const parts = dateString.split('-');
+          if (parts.length !== 3) return dateString;
+          
+          // Use UTC parameters to prevent time-zone shifts
+          const date = new Date(Date.UTC(parts[0], parts[1] - 1, parts[2]));
+          const months = [
+            'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
+            'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'
+          ];
+          
+          const day = date.getUTCDate();
+          const monthStr = months[date.getUTCMonth()];
+          const year = date.getUTCFullYear();
+          
+          return `${monthStr} ${day}, ${year}`;
+        }
+
+        // Initialize with default dates (Today and Tomorrow)
+        const today = new Date();
+        const tomorrow = new Date();
+        tomorrow.setDate(today.getDate() + 1);
+
+        const formatDateISO = (d) => {
+          const year = d.getFullYear();
+          const month = String(d.getMonth() + 1).padStart(2, '0');
+          const day = String(d.getDate()).padStart(2, '0');
+          return `${year}-${month}-${day}`;
+        };
+
+        // Set initial values
+        checkinInput.value = formatDateISO(today);
+        checkoutInput.value = formatDateISO(tomorrow);
+
+        // Render formatted dates
+        const updateDisplay = () => {
+          checkinVal.textContent = formatSpanishDate(checkinInput.value);
+          checkoutVal.textContent = formatSpanishDate(checkoutInput.value);
+        };
+        updateDisplay();
+
+        // Update when user selects a date
+        checkinInput.addEventListener('change', () => {
+          updateDisplay();
+          // Ensure checkout is after checkin
+          if (new Date(checkoutInput.value) <= new Date(checkinInput.value)) {
+            const nextDay = new Date(checkinInput.value);
+            nextDay.setDate(nextDay.getDate() + 1);
+            checkoutInput.value = formatDateISO(nextDay);
+            updateDisplay();
+          }
+        });
+
+        checkoutInput.addEventListener('change', updateDisplay);
+
+        // Click trigger for hidden date inputs
+        checkinField.addEventListener('click', (e) => {
+          if (e.target !== checkinInput) {
+            try {
+              checkinInput.showPicker();
+            } catch (err) {
+              checkinInput.focus();
+              checkinInput.click();
+            }
+          }
+        });
+
+        checkinFieldRegreso.addEventListener('click', (e) => {
+          if (e.target !== checkoutInput) {
+            try {
+              checkoutInput.showPicker();
+            } catch (err) {
+              checkoutInput.focus();
+              checkoutInput.click();
+            }
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
