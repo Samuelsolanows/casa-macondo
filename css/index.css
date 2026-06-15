@@ -694,8 +694,40 @@ body {
     margin-bottom: 1rem;
   }
 
-  .btn-confirmar {
+    .btn-confirmar {
     width: 100%;
     align-self: stretch;
   }
+}
+
+/* Auth Alert Messages */
+.auth-alert {
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  line-height: 1.4;
+  animation: authFadeIn 0.3s ease;
+}
+
+.auth-alert-error {
+  background-color: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fca5a5;
+}
+
+.auth-alert-success {
+  background-color: #dcfce7;
+  color: #166534;
+  border: 1px solid #86efac;
+}
+
+@keyframes authFadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
 }
