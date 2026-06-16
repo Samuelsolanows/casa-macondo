@@ -270,12 +270,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Almacenar datos del usuario
         localStorage.setItem('user', JSON.stringify(data.user));
+        updateHeaderSession();
 
         // Cerrar el modal tras 1.5 segundos
         setTimeout(() => {
           closeModal();
-          // Opcional: Actualizar interfaz para reflejar sesión (por ejemplo, cambiar el botón Reservar o saludar)
-          console.log('Usuario autenticado:', data.user);
+          window.location.reload();
         }, 1500);
 
       } catch (err) {
