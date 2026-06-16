@@ -88,4 +88,78 @@ router.post('/login', async (req, res) => {
   }
 });
 
+// PUT /api/auth/profile - Actualizar perfil del usuario
+router.put('/profile', async (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'];
+    if (!userId) {
+      return res.status(401).json({ error: 'No autorizado. Se requiere iniciar sesión.' });
+    }
+
+    const { nombre, correo, telefono, contrasena, nuevaContrasena } = req.body;
+
+    if (!nombre || !correo) {
+      return res.status(400).json({ error: 'El nombre y el correo son obligatorios.' });
+    }
+
+    // Buscar al usuario actual
+    const [users] = await db.query('SELECT * FROM usuarios WHERE id_usuario = ?', [userId]);
+    if (users.length === 0) {
+      return res.status(404).json({ error: 'Usuario no encontrado.' });
+    }
+    const user = users[0];
+
+    // Verificar que el correo no esté ocupado por otro usuario
+    const [existingUsers] = await db.query(
+      'SELECT id_usuario FROM usuarios WHERE correo = ? AND id_usuario != ?',
+      [correo, userId]
+    );
+    if (existingUsers.length > 0) {
+      return res.status(400).json({ error: 'El correo electrónico ya está en uso por otro usuario.' });
+    }
+
+    let hashedPassword = user.contrasena;
+
+    // Si quiere cambiar contraseña
+    if (nuevaContrasena && nuevaContrasena.trim() !== '') {
+      if (!contrasena) {
+        return res.status(400).json({ error: 'Debes ingresar tu contraseña actual para cambiarla.' });
+      }
+
+      const isMatch = await bcrypt.compare(contrasena, user.contrasena);
+      if (!isMatch) {
+        return res.status(401).json({ error: 'La contraseña actual es incorrecta.' });
+      }
+
+      if (nuevaContrasena.length < 6) {
+        return res.status(400).json({ error: 'La nueva contraseña debe tener al menos 6 caracteres.' });
+      }
+
+      const salt = await bcrypt.genSalt(10);
+      hashedPassword = await bcrypt.hash(nuevaContrasena, salt);
+    }
+
+    // Actualizar en la base de datos
+    await db.query(
+      'UPDATE usuarios SET nombre = ?, correo = ?, telefono = ?, contrasena = ? WHERE id_usuario = ?',
+      [nombre, correo, telefono || null, hashedPassword, userId]
+    );
+
+    res.status(200).json({
+      message: 'Perfil actualizado exitosamente.',
+      user: {
+        id_usuario: parseInt(userId),
+        nombre,
+        correo,
+        telefono: telefono || null,
+        id_rol: user.id_rol
+      }
+    });
+
+  } catch (error) {
+    console.error('Error en PUT /profile:', error);
+    res.status(500).json({ error: 'Error interno del servidor al actualizar el perfil.' });
+  }
+});
+
 module.exports = router;

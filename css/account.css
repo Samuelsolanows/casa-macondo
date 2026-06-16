@@ -1,0 +1,567 @@
+/* ==========================================
+   Account Profile Page Layout (cuenta.html)
+   ========================================== */
+
+.account-page-body {
+  background-color: #0b1511;
+  color: var(--color-cream);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.account-container {
+  max-width: 1200px;
+  width: 100%;
+  margin: 110px auto 4rem auto; /* Space for fixed site-header */
+  padding: 0 2rem;
+  display: flex;
+  gap: 3rem;
+  flex-grow: 1;
+}
+
+/* Sidebar Layout */
+.account-sidebar {
+  width: 280px;
+  flex-shrink: 0;
+  background-color: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(243, 233, 228, 0.08);
+  border-radius: 20px;
+  padding: 2.2rem 1.5rem;
+  height: fit-content;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.user-badge {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  border-bottom: 1px solid rgba(243, 233, 228, 0.1);
+  padding-bottom: 1.8rem;
+}
+
+.user-avatar {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background-color: var(--color-dark-green);
+  color: var(--color-cream);
+  font-family: var(--font-heading);
+  font-size: 2.2rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 15px rgba(11, 61, 46, 0.4);
+  text-transform: uppercase;
+}
+
+.user-sidebar-name {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--color-cream);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.user-sidebar-role {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+  background-color: rgba(243, 233, 228, 0.1);
+  padding: 0.35rem 0.8rem;
+  border-radius: 50px;
+  color: var(--color-cream);
+}
+
+.account-nav-tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  color: rgba(243, 233, 228, 0.65);
+  padding: 0.9rem 1.2rem;
+  text-align: left;
+  border-radius: 10px;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  transition: background-color var(--transition-speed), color var(--transition-speed);
+  width: 100%;
+}
+
+.tab-btn:hover {
+  background-color: rgba(255, 255, 255, 0.03);
+  color: var(--color-cream);
+}
+
+.tab-btn.active {
+  background-color: var(--color-dark-green);
+  color: var(--color-cream);
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(11, 61, 46, 0.3);
+}
+
+.tab-btn.hidden {
+  display: none;
+}
+
+.tab-icon {
+  stroke: currentColor;
+  flex-shrink: 0;
+}
+
+/* Content Area */
+.account-content-area {
+  flex-grow: 1;
+  background-color: rgba(255, 255, 255, 0.01);
+  border: 1px solid rgba(243, 233, 228, 0.05);
+  border-radius: 24px;
+  padding: 3rem;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+  min-height: 500px;
+}
+
+.account-section {
+  display: none;
+  animation: tabFadeIn 0.4s ease;
+}
+
+.account-section.active {
+  display: block;
+}
+
+@keyframes tabFadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.section-heading {
+  font-family: var(--font-heading);
+  font-size: 2.8rem;
+  font-weight: 500;
+  color: var(--color-cream);
+  margin-bottom: 0.5rem;
+}
+
+.section-lead {
+  font-size: 0.95rem;
+  color: rgba(243, 233, 228, 0.6);
+  margin-bottom: 2.5rem;
+  line-height: 1.5;
+}
+
+/* Role badge notification box */
+.role-alert-box {
+  background-color: rgba(11, 61, 46, 0.15);
+  border: 1px solid rgba(11, 61, 46, 0.4);
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.role-badge {
+  background-color: var(--color-dark-green);
+  color: var(--color-cream);
+  padding: 0.25rem 0.7rem;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+/* Profile Form Layout */
+.account-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-row-two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.form-row-three {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1.2rem;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  text-align: left;
+}
+
+.form-field label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: rgba(243, 233, 228, 0.8);
+  letter-spacing: 0.5px;
+}
+
+.form-field input, .form-field select, .form-field textarea {
+  width: 100%;
+  padding: 0.85rem 1.1rem;
+  background-color: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(243, 233, 228, 0.15);
+  border-radius: 8px;
+  color: var(--color-cream);
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+.form-field input:focus, .form-field select:focus, .form-field textarea:focus {
+  border-color: var(--color-cream);
+  box-shadow: 0 0 0 3px rgba(243, 233, 228, 0.08);
+}
+
+.password-change-section {
+  border-top: 1px solid rgba(243, 233, 228, 0.08);
+  margin-top: 2rem;
+  padding-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.password-change-section h3 {
+  font-family: var(--font-heading);
+  font-size: 1.6rem;
+  font-weight: 500;
+}
+
+.section-subtext {
+  font-size: 0.85rem;
+  color: rgba(243, 233, 228, 0.5);
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+}
+
+.btn-primary-account {
+  align-self: flex-start;
+  background-color: var(--color-cream);
+  color: #0b1511;
+  border: none;
+  border-radius: 50px;
+  padding: 0.9rem 2.8rem;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: background-color var(--transition-speed), transform 0.2s, box-shadow var(--transition-speed);
+  margin-top: 1rem;
+}
+
+.btn-primary-account:hover {
+  background-color: var(--color-white);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.btn-primary-account:active {
+  transform: translateY(0);
+}
+
+/* CRUD Header Row */
+.section-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+  gap: 2rem;
+}
+
+.btn-action-add {
+  background-color: var(--color-dark-green);
+  color: var(--color-cream);
+  border: none;
+  padding: 0.8rem 1.6rem;
+  border-radius: 50px;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 12px rgba(11, 61, 46, 0.3);
+  transition: background-color var(--transition-speed), transform 0.2s, box-shadow var(--transition-speed);
+}
+
+.btn-action-add:hover {
+  background-color: var(--color-dark-green-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(11, 61, 46, 0.4);
+}
+
+.search-filter-row {
+  margin-bottom: 2rem;
+}
+
+.search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.search-icon-svg {
+  position: absolute;
+  left: 1.2rem;
+  color: rgba(243, 233, 228, 0.4);
+}
+
+.search-input-wrapper input {
+  width: 100%;
+  padding: 0.9rem 1rem 0.9rem 3rem;
+  background-color: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(243, 233, 228, 0.1);
+  border-radius: 12px;
+  color: var(--color-cream);
+  outline: none;
+  font-size: 0.9rem;
+  transition: border-color var(--transition-speed), background-color var(--transition-speed);
+}
+
+.search-input-wrapper input:focus {
+  border-color: rgba(243, 233, 228, 0.3);
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* CRUD Table Styles */
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid rgba(243, 233, 228, 0.08);
+  border-radius: 14px;
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
+.crud-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.88rem;
+}
+
+.crud-table th, .crud-table td {
+  padding: 1.1rem 1.3rem;
+  border-bottom: 1px solid rgba(243, 233, 228, 0.06);
+}
+
+.crud-table th {
+  background-color: rgba(11, 61, 46, 0.2);
+  color: var(--color-cream);
+  font-weight: 600;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid rgba(243, 233, 228, 0.1);
+}
+
+.crud-table tbody tr {
+  transition: background-color var(--transition-speed);
+}
+
+.crud-table tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+.crud-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.table-img {
+  width: 60px;
+  height: 45px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid rgba(243, 233, 228, 0.1);
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+.table-desc-cell {
+  max-width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: rgba(243, 233, 228, 0.65);
+}
+
+.table-empty-state {
+  text-align: center !important;
+  color: rgba(243, 233, 228, 0.45);
+  padding: 4rem 2rem !important;
+}
+
+/* Action Buttons inside Table */
+.table-actions {
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+}
+
+.btn-table-edit {
+  background: none;
+  border: none;
+  color: #fbbf24; /* Amber yellow */
+  cursor: pointer;
+  padding: 0.4rem;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color var(--transition-speed), transform 0.1s;
+}
+
+.btn-table-edit:hover {
+  background-color: rgba(251, 191, 36, 0.1);
+  transform: scale(1.08);
+}
+
+.btn-table-delete {
+  background: none;
+  border: none;
+  color: #f87171; /* Soft red */
+  cursor: pointer;
+  padding: 0.4rem;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color var(--transition-speed), transform 0.1s;
+}
+
+.btn-table-delete:hover {
+  background-color: rgba(248, 113, 113, 0.1);
+  transform: scale(1.08);
+}
+
+/* Extra Styling for CRUD Modals */
+.crud-modal-card {
+  width: 680px;
+  height: auto;
+  max-height: 90vh;
+  overflow-y: auto;
+  flex-direction: column;
+}
+
+.large-crud-modal {
+  width: 820px;
+}
+
+.crud-modal-content {
+  padding: 3.5rem 4rem 3.5rem 4rem;
+  width: 100%;
+}
+
+.crud-modal-card .auth-title {
+  margin-bottom: 2rem;
+  text-align: left;
+}
+
+.input-wrapper.no-icon input, .input-wrapper no-icon select {
+  padding-left: 1.1rem !important;
+}
+
+textarea {
+  font-family: var(--font-sans);
+  width: 100%;
+  padding: 0.85rem 1.1rem;
+  background-color: var(--color-white);
+  border: 1.5px solid rgba(14, 51, 39, 0.15);
+  border-radius: 8px;
+  color: #222222;
+  outline: none;
+  font-size: 0.9rem;
+  resize: vertical;
+}
+
+textarea:focus {
+  border-color: var(--color-dark-green);
+  box-shadow: 0 0 0 3px rgba(14, 51, 39, 0.12);
+}
+
+/* Alert Notification box inside CRUD Form */
+.crud-alert {
+  padding: 0.85rem 1.1rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  line-height: 1.4;
+  animation: authFadeIn 0.3s ease;
+}
+
+/* Adjustments for mobile responsive */
+@media (max-width: 992px) {
+  .account-container {
+    flex-direction: column;
+    gap: 2rem;
+  }
+  .account-sidebar {
+    width: 100%;
+    padding: 1.8rem;
+  }
+  .account-nav-tabs {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .tab-btn {
+    width: auto;
+    flex: 1;
+    min-width: 160px;
+    justify-content: center;
+  }
+  .account-content-area {
+    padding: 2.2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .account-container {
+    margin-top: 90px;
+    padding: 0 1.2rem;
+  }
+  .account-content-area {
+    padding: 1.5rem;
+  }
+  .form-row-two, .form-row-three {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+  .crud-modal-content {
+    padding: 2.5rem 1.8rem;
+  }
+  .tab-btn {
+    min-width: 100%;
+  }
+}
