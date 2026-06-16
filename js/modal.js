@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Formularios
   const registerForm   = document.getElementById('registerForm');
   const loginForm      = document.getElementById('loginForm');
+  const footerRegisterBtn = document.getElementById('footerRegisterBtn');
 
   // ---- Funciones principales ----
 
@@ -63,6 +64,14 @@ document.addEventListener('DOMContentLoaded', () => {
   // Botón "Reservar" en la cabecera → abrir modal en vista Registro
   if (btnReservar) {
     btnReservar.addEventListener('click', (e) => {
+      e.preventDefault();
+      openModal();
+    });
+  }
+
+  // Enlace "Registro" en el footer de la página de detalle
+  if (footerRegisterBtn) {
+    footerRegisterBtn.addEventListener('click', (e) => {
       e.preventDefault();
       openModal();
     });
