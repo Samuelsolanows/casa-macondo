@@ -3,13 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Actividad - Casa Macondo</title>
+    <title>Actividades - Casa Macondo</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@500;600;700;800&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/index.css">
   </head>
-  <body class="detail-page-body">
+  <body class="activities-page-body">
     
     <!-- Header principal -->
     <header class="site-header">
@@ -38,10 +38,29 @@
       </nav>
     </header>
 
-    <!-- Contenido de la Experiencia (Carga Dinámica) -->
-    <main class="activity-detail-container" id="activityDetailContent">
-      <div class="loading-spinner-large">Cargando la experiencia...</div>
-    </main>
+    <!-- Sección de Actividades y Atractivos -->
+    <section class="actividades-section" id="actividades" style="margin-top: 100px; border-top: none;">
+      <div class="section-container">
+        <h2 class="section-title">Actividades y Atractivos</h2>
+        <p class="section-subtitle">Descubre las experiencias inolvidables que Bochalema y Casa Macondo tienen para ti.</p>
+        
+        <!-- Barra de Búsqueda -->
+        <div class="search-container">
+          <div class="search-wrapper">
+            <svg class="search-input-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" id="activitySearchInput" placeholder="Buscar actividades por nombre, descripción o categoría..." aria-label="Buscar actividades" autofocus />
+          </div>
+        </div>
+
+        <!-- Contenedor de Grilla Dinámica -->
+        <div class="activities-grid" id="activitiesList">
+          <div class="loading-spinner">Cargando atractivos...</div>
+        </div>
+      </div>
+    </section>
 
     <!-- Footer Premium -->
     <footer class="site-footer">
@@ -171,6 +190,6 @@
 
     <!-- Scripts -->
     <script src="js/modal.js" defer></script>
-    <script src="js/activity-detail.js" defer></script>
+    <script src="js/activities.js" defer></script>
   </body>
 </html>
