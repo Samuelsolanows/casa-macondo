@@ -24,6 +24,68 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ---- Funciones principales ----
 
+  function updateHeaderSession() {
+    const userJson = localStorage.getItem('user');
+    const navRight = document.querySelector('.nav-menu.nav-right');
+    if (!navRight) return;
+
+    // Remove any previously added dynamic buttons to avoid duplicates
+    const oldDynamicItems = navRight.querySelectorAll('.dynamic-session-item');
+    oldDynamicItems.forEach(item => item.remove());
+
+    const btnReservar = navRight.querySelector('.btn-reservar');
+
+    if (userJson) {
+      const user = JSON.parse(userJson);
+      
+      // Hide standard btnReservar
+      if (btnReservar) {
+        btnReservar.style.display = 'none';
+      }
+
+      // Create "Mi Cuenta" link
+      const myAccountLink = document.createElement('a');
+      myAccountLink.href = 'cuenta.html';
+      myAccountLink.className = 'dynamic-session-item nav-account-link';
+      myAccountLink.textContent = 'Mi Cuenta';
+      myAccountLink.style.marginRight = '1.5rem';
+
+      // Create "Cerrar Sesión" button
+      const logoutBtn = document.createElement('button');
+      logoutBtn.className = 'dynamic-session-item btn-reservar btn-logout';
+      logoutBtn.textContent = 'Cerrar Sesión';
+      logoutBtn.style.backgroundColor = '#7a1d1d';
+      logoutBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        localStorage.removeItem('user');
+        updateHeaderSession();
+        if (window.location.pathname.includes('cuenta.html')) {
+          window.location.href = 'Index.html';
+        } else {
+          window.location.reload();
+        }
+      });
+
+      // Insert before menu toggle or append
+      const menuToggle = navRight.querySelector('.menu-toggle');
+      if (menuToggle) {
+        navRight.insertBefore(myAccountLink, menuToggle);
+        navRight.insertBefore(logoutBtn, menuToggle);
+      } else {
+        navRight.appendChild(myAccountLink);
+        navRight.appendChild(logoutBtn);
+      }
+    } else {
+      // Show standard btnReservar
+      if (btnReservar) {
+        btnReservar.style.display = 'block';
+      }
+    }
+  }
+
+  // Ejecutar al cargar la página
+  updateHeaderSession();
+
   /** Abre la ventana emergente y muestra la vista de Registro por defecto. */
   function openModal() {
     authModal.classList.add('active');
