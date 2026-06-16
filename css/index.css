@@ -1240,3 +1240,559 @@ body {
     justify-content: center;
   }
 }
+
+/* ==========================================
+   Accommodations Grid (Grid de Alojamientos)
+   ========================================== */
+.alojamientos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 3rem;
+  text-align: left;
+}
+
+/* Card of Alojamiento */
+.alojamiento-card {
+  background-color: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(243, 233, 228, 0.08);
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+.alojamiento-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(243, 233, 228, 0.2);
+  box-shadow: 0 25px 45px rgba(0, 0, 0, 0.35);
+}
+
+/* Cabin Carousel inside Card */
+.cabin-carousel {
+  position: relative;
+  width: 100%;
+  height: 260px;
+  overflow: hidden;
+}
+
+.carousel-track {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.carousel-slide {
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+}
+
+.carousel-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Carousel navigation elements */
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(11, 21, 17, 0.7);
+  border: none;
+  color: var(--color-cream);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  line-height: 32px;
+  cursor: pointer;
+  z-index: 5;
+  opacity: 0;
+  transition: opacity var(--transition-speed), background-color var(--transition-speed);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 4px;
+}
+
+.alojamiento-card:hover .carousel-arrow {
+  opacity: 1;
+}
+
+.carousel-arrow:hover {
+  background-color: rgba(14, 51, 39, 0.9);
+}
+
+.prev-arrow {
+  left: 0.8rem;
+}
+
+.next-arrow {
+  right: 0.8rem;
+}
+
+.carousel-dots {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.45rem;
+  z-index: 5;
+}
+
+.carousel-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: rgba(243, 233, 228, 0.45);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: background-color var(--transition-speed), transform var(--transition-speed);
+}
+
+.carousel-dot.active {
+  background-color: var(--color-cream);
+  transform: scale(1.3);
+}
+
+/* Lodging card details */
+.alojamiento-info {
+  padding: 1.8rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.alojamiento-title {
+  font-family: var(--font-sans);
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--color-cream);
+  margin-bottom: 0.8rem;
+}
+
+.alojamiento-meta-row {
+  display: flex;
+  gap: 1.2rem;
+  margin-bottom: 1.8rem;
+}
+
+.alojamiento-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  color: rgba(243, 233, 228, 0.6);
+  font-weight: 500;
+}
+
+.alojamiento-action-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+}
+
+.alojamiento-price-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.price-value {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-cream);
+}
+
+.price-label {
+  font-size: 0.75rem;
+  color: rgba(243, 233, 228, 0.5);
+  margin-top: 1px;
+}
+
+.btn-cabin-detail {
+  background-color: transparent;
+  color: var(--color-cream);
+  border: 1.5px solid rgba(243, 233, 228, 0.25);
+  padding: 0.65rem 1.4rem;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color var(--transition-speed), border-color var(--transition-speed), color var(--transition-speed);
+}
+
+.btn-cabin-detail:hover {
+  background-color: var(--color-cream);
+  color: #0b1511;
+  border-color: var(--color-cream);
+}
+
+/* ==========================================
+   Accommodation Detail Page Layout
+   ========================================== */
+.cabin-detail-header {
+  margin-bottom: 2.5rem;
+  text-align: left;
+}
+
+.btn-back-to-list {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: rgba(243, 233, 228, 0.6);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 1.2rem;
+  transition: color var(--transition-speed);
+}
+
+.btn-back-to-list:hover {
+  color: var(--color-cream);
+}
+
+.cabin-detail-title {
+  font-family: var(--font-heading);
+  font-size: 3.4rem;
+  font-weight: 500;
+  color: var(--color-cream);
+  margin: 0;
+}
+
+.cabin-detail-layout {
+  display: flex;
+  gap: 3.5rem;
+}
+
+.cabin-detail-main {
+  width: 65%;
+  display: flex;
+  flex-direction: column;
+  gap: 3.5rem;
+}
+
+.cabin-detail-sidebar {
+  width: 35%;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+/* Gallery Carousel */
+.cabin-gallery-carousel {
+  position: relative;
+  width: 100%;
+  height: 480px;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.4);
+}
+
+.gallery-track {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.gallery-slide {
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+}
+
+.gallery-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cabin-gallery-carousel .carousel-arrow {
+  opacity: 1;
+  width: 44px;
+  height: 44px;
+  font-size: 1.8rem;
+  background-color: rgba(11, 21, 17, 0.65);
+}
+
+.cabin-gallery-carousel .prev-arrow {
+  left: 1.2rem;
+}
+
+.cabin-gallery-carousel .next-arrow {
+  right: 1.2rem;
+}
+
+.gallery-dots {
+  position: absolute;
+  bottom: 1.2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.5rem;
+  z-index: 5;
+}
+
+.gallery-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: rgba(243, 233, 228, 0.4);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: background-color var(--transition-speed), transform var(--transition-speed);
+}
+
+.gallery-dot.active {
+  background-color: var(--color-cream);
+  transform: scale(1.3);
+}
+
+/* Cabin Info Sections */
+.cabin-description-section h2, .cabin-services-section h2 {
+  font-family: var(--font-heading);
+  font-size: 2.2rem;
+  font-weight: 500;
+  margin-bottom: 1.2rem;
+}
+
+.cabin-desc-text {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: rgba(243, 233, 228, 0.8);
+  font-weight: 300;
+}
+
+.cabin-specs-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  border-top: 1px solid rgba(243, 233, 228, 0.1);
+  border-bottom: 1px solid rgba(243, 233, 228, 0.1);
+  padding: 2.2rem 0;
+}
+
+.spec-card {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.spec-value {
+  font-size: 2.2rem;
+  font-weight: 600;
+  color: var(--color-cream);
+}
+
+.spec-label {
+  font-size: 0.85rem;
+  color: rgba(243, 233, 228, 0.6);
+  font-weight: 500;
+}
+
+.services-list-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.2rem;
+}
+
+.service-list-item {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 0.98rem;
+  color: rgba(243, 233, 228, 0.85);
+  font-weight: 400;
+}
+
+.check-icon {
+  color: #10b981;
+}
+
+/* Sidebar elements */
+.booking-card, .map-card {
+  background-color: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(243, 233, 228, 0.08);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+.booking-card-price {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  border-bottom: 1px solid rgba(243, 233, 228, 0.1);
+  padding-bottom: 1.5rem;
+  margin-bottom: 1.8rem;
+}
+
+.booking-card-price .price-amount {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--color-cream);
+}
+
+.booking-card-price .price-label {
+  font-size: 0.9rem;
+  color: rgba(243, 233, 228, 0.6);
+}
+
+.booking-sidebar-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.booking-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  text-align: left;
+}
+
+.booking-form-group label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: rgba(243, 233, 228, 0.65);
+  letter-spacing: 0.8px;
+}
+
+.booking-form-group input, .booking-form-group select {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  background-color: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(243, 233, 228, 0.15);
+  border-radius: 8px;
+  color: var(--color-cream);
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color var(--transition-speed);
+}
+
+.booking-form-group input:focus, .booking-form-group select:focus {
+  border-color: var(--color-cream);
+}
+
+.booking-form-group select option {
+  background-color: #0b1511;
+  color: var(--color-cream);
+}
+
+.btn-confirm-booking {
+  width: 100%;
+  background-color: var(--color-cream);
+  color: #0b1511;
+  border: none;
+  border-radius: 50px;
+  padding: 1rem;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 0.8rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  transition: background-color var(--transition-speed), transform 0.2s, box-shadow var(--transition-speed);
+}
+
+.btn-confirm-booking:hover {
+  background-color: var(--color-white);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+
+.btn-confirm-booking:active {
+  transform: translateY(0);
+}
+
+/* Map Card */
+.map-card h3 {
+  font-family: var(--font-heading);
+  font-size: 1.6rem;
+  font-weight: 500;
+  margin-bottom: 0.2rem;
+}
+
+.map-location-sub {
+  font-size: 0.8rem;
+  color: rgba(243, 233, 228, 0.5);
+  margin-bottom: 1.2rem;
+}
+
+.map-iframe-wrapper {
+  border-radius: 12px;
+  overflow: hidden;
+  line-height: 0;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* ==========================================
+   Lodging Details Responsive Adjustments
+   ========================================== */
+@media (max-width: 992px) {
+  .cabin-detail-layout {
+    flex-direction: column;
+    gap: 3rem;
+  }
+  .cabin-detail-main {
+    width: 100%;
+  }
+  .cabin-detail-sidebar {
+    width: 100%;
+    flex-direction: row;
+    align-items: stretch;
+    gap: 2rem;
+  }
+  .booking-card, .map-card {
+    flex: 1;
+    width: 50%;
+  }
+  .cabin-gallery-carousel {
+    height: 380px;
+  }
+  .cabin-detail-title {
+    font-size: 2.8rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .alojamientos-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .cabin-detail-sidebar {
+    flex-direction: column;
+  }
+  .booking-card, .map-card {
+    width: 100%;
+  }
+  .cabin-gallery-carousel {
+    height: 300px;
+  }
+  .cabin-detail-title {
+    font-size: 2.2rem;
+  }
+  .cabin-description-section h2, .cabin-services-section h2 {
+    font-size: 1.8rem;
+  }
+  .services-list-grid {
+    grid-template-columns: 1fr;
+  }
+  .cabin-specs-grid {
+    padding: 1.5rem 0;
+  }
+  .spec-value {
+    font-size: 1.8rem;
+  }
+}

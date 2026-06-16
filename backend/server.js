@@ -14,9 +14,11 @@ app.use(express.json());
 // Rutas
 const authRoutes = require('./routes/auth');
 const actividadesRoutes = require('./routes/actividades');
+const alojamientosRoutes = require('./routes/alojamientos');
 
 app.use('/api', authRoutes);
 app.use('/api/actividades', actividadesRoutes);
+app.use('/api/alojamientos', alojamientosRoutes);
 
 // Ruta de estado simple
 app.get('/status', (req, res) => {
