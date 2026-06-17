@@ -12,3 +12,8 @@ backend/.env
 .vscode/
 .DS_Store
 Thumbs.db
+
+# Standalone sprint versions
+sprint-1/
+sprint-2/
+sprint-3/
