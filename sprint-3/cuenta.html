@@ -1,0 +1,684 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mi Cuenta - Casa Macondo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@500;600;700;800&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/account.css">
+  </head>
+  <body class="account-page-body">
+    
+    <!-- Header principal -->
+    <header class="site-header">
+      <nav class="nav-menu nav-left">
+        <a href="actividades.html">Actividades</a>
+        <a href="alojamientos.html">Alojamiento</a>
+        <a href="emprendimientos.html">Emprendimientos</a>
+        <a href="eventos.html">Eventos</a>
+      </nav>
+
+      <div class="logo">
+        <a href="Index.html"><img src="img/LogoGrande.png" alt="Casa Macondo Logo" /></a>
+      </div>
+
+      <nav class="nav-menu nav-right">
+        <button class="btn-reservar">Reservar</button>
+        <a href="#menu" class="menu-toggle">
+          <svg class="menu-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+          MENÚ
+        </a>
+      </nav>
+    </header>
+
+    <!-- Main Account Area -->
+    <main class="account-container">
+      <div class="account-sidebar">
+        <div class="user-badge">
+          <div class="user-avatar" id="userAvatarLetter">U</div>
+          <h2 class="user-sidebar-name" id="userSidebarName">Cargando...</h2>
+          <span class="user-sidebar-role" id="userSidebarRole">Usuario</span>
+        </div>
+        <nav class="account-nav-tabs">
+          <button class="tab-btn hidden" data-tab="profile" id="tabProfile" style="display: none;">
+            <svg class="tab-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            Mi Perfil
+          </button>
+          <button class="tab-btn admin-only hidden" data-tab="activities" id="tabAdminActivities" style="display: none;">
+            <svg class="tab-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="9" x2="15" y2="9"></line><line x1="9" y1="13" x2="15" y2="13"></line><line x1="9" y1="17" x2="13" y2="17"></line></svg>
+            Administrar Actividades
+          </button>
+          <button class="tab-btn admin-only hidden" data-tab="accommodations" id="tabAdminAccommodations">
+            <svg class="tab-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Administrar Alojamientos
+          </button>
+          <button class="tab-btn" data-tab="ventures" id="tabVentures">
+            <svg class="tab-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7h-3V4c0-1.1-.9-2-2-2H9c-1.1 0-2 .9-2 2v3H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2zM9 4h6v3H9V4z"></path></svg>
+            Mis Emprendimientos
+          </button>
+          <button class="tab-btn admin-only hidden" data-tab="events" id="tabAdminEvents">
+            <svg class="tab-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+            Administrar Eventos
+          </button>
+        </nav>
+      </div>
+
+      <div class="account-content-area">
+        
+        <!-- Profile Tab -->
+        <section class="account-section" id="profileSection" style="display: none;">
+          <h1 class="section-heading">Editar Perfil</h1>
+          <p class="section-lead">Actualiza tu información personal y contraseña de Casa Macondo.</p>
+          
+          <div class="role-alert-box">
+            <span>Tu rol actual en la plataforma es: </span>
+            <strong class="role-badge" id="profileRoleText">Usuario</strong>
+          </div>
+
+          <form id="profileForm" class="account-form">
+            <div id="profileAlert"></div>
+            
+            <div class="form-row-two">
+              <div class="form-field">
+                <label for="profileName">Nombre Completo</label>
+                <input type="text" id="profileName" required />
+              </div>
+              <div class="form-field">
+                <label for="profileEmail">Correo Electrónico</label>
+                <input type="email" id="profileEmail" required />
+              </div>
+            </div>
+            
+            <div class="form-row-two">
+              <div class="form-field">
+                <label for="profilePhone">Teléfono</label>
+                <input type="tel" id="profilePhone" placeholder="Ej: +57 300 123 4567" />
+              </div>
+              <div class="form-field">
+                <!-- Empty spacer for layout -->
+              </div>
+            </div>
+
+            <div class="password-change-section">
+              <h3>Cambiar Contraseña</h3>
+              <p class="section-subtext">Completa estos campos únicamente si deseas modificar tu contraseña actual.</p>
+              
+              <div class="form-field">
+                <label for="profileCurrentPassword">Contraseña Actual</label>
+                <input type="password" id="profileCurrentPassword" placeholder="Requerido para guardar cambios de contraseña" />
+              </div>
+              
+              <div class="form-row-two">
+                <div class="form-field">
+                  <label for="profileNewPassword">Nueva Contraseña</label>
+                  <input type="password" id="profileNewPassword" placeholder="Mínimo 6 caracteres" />
+                </div>
+                <div class="form-field">
+                  <label for="profileConfirmNewPassword">Confirmar Nueva Contraseña</label>
+                  <input type="password" id="profileConfirmNewPassword" placeholder="Confirma tu nueva contraseña" />
+                </div>
+              </div>
+            </div>
+
+            <button type="submit" class="btn-primary-account">Guardar Cambios</button>
+          </form>
+        </section>
+
+        <!-- Admin Activities Tab (Admin Only) -->
+        <section class="account-section" id="activitiesSection">
+          <div class="section-header-row">
+            <div>
+              <h1 class="section-heading">Administración de Actividades</h1>
+              <p class="section-lead">Crea, edita o elimina los atractivos turísticos y experiencias locales.</p>
+            </div>
+            <button class="btn-action-add" id="btnAddActivity">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              Agregar Actividad
+            </button>
+          </div>
+
+          <div class="search-filter-row">
+            <div class="search-input-wrapper">
+              <svg class="search-icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              <input type="text" id="adminActivitySearch" placeholder="Buscar actividad por nombre, descripción o categoría..." />
+            </div>
+          </div>
+
+          <div class="table-container">
+            <table class="crud-table" id="activitiesTable">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Imagen</th>
+                  <th>Nombre</th>
+                  <th>Categoría</th>
+                  <th>Descripción</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="activitiesTableBody">
+                <!-- Se llenará dinámicamente -->
+                <tr>
+                  <td colspan="6" class="table-empty-state">Cargando actividades...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Admin Accommodations Tab (Admin Only) -->
+        <section class="account-section" id="accommodationsSection">
+          <div class="section-header-row">
+            <div>
+              <h1 class="section-heading">Administración de Alojamientos</h1>
+              <p class="section-lead">Gestiona las cabañas, sus servicios, precios por noche, mapa y galerías de fotos.</p>
+            </div>
+            <button class="btn-action-add" id="btnAddAccommodation">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              Agregar Alojamiento
+            </button>
+          </div>
+
+          <div class="table-container">
+            <table class="crud-table" id="accommodationsTable">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nombre</th>
+                  <th>Capacidad</th>
+                  <th>Habitaciones/Camas</th>
+                  <th>Precio/Noche</th>
+                  <th>Servicios</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="accommodationsTableBody">
+                <!-- Se llenará dinámicamente -->
+                <tr>
+                  <td colspan="7" class="table-empty-state">Cargando alojamientos...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Ventures Tab -->
+        <section class="account-section" id="venturesSection">
+          <div class="section-header-row">
+            <div>
+              <h1 class="section-heading">Mis Emprendimientos</h1>
+              <p class="section-lead">Registra y gestiona tus emprendimientos locales en Bochalema.</p>
+            </div>
+            <button class="btn-action-add" id="btnAddVenture">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              Agregar Emprendimiento
+            </button>
+          </div>
+
+          <div class="table-container">
+            <table class="crud-table" id="venturesTable">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Imagen</th>
+                  <th>Nombre</th>
+                  <th>Categoría</th>
+                  <th>Contacto</th>
+                  <th>Descripción</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="venturesTableBody">
+                <tr>
+                  <td colspan="7" class="table-empty-state">Cargando emprendimientos...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Admin Events Tab (Admin Only) -->
+        <section class="account-section" id="eventsSection">
+          <div class="section-header-row">
+            <div>
+              <h1 class="section-heading">Administración de Eventos</h1>
+              <p class="section-lead">Gestiona la cartelera de eventos culturales y turísticos de Bochalema.</p>
+            </div>
+            <button class="btn-action-add" id="btnAddEvent">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              Agregar Evento
+            </button>
+          </div>
+
+          <div class="table-container">
+            <table class="crud-table" id="eventsTable">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Imagen</th>
+                  <th>Título</th>
+                  <th>Fecha / Hora</th>
+                  <th>Lugar</th>
+                  <th>Organizador</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="eventsTableBody">
+                <tr>
+                  <td colspan="7" class="table-empty-state">Cargando eventos...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+    <!-- Footer Premium -->
+    <footer class="site-footer">
+      <div class="footer-container">
+        <!-- Logo Column -->
+        <div class="footer-col footer-logo-col">
+          <img src="img/logo_beige.png" alt="Casa Macondo Logo" class="footer-logo" />
+        </div>
+        
+        <!-- Navigation Columns -->
+        <div class="footer-col">
+          <a href="actividades.html">Actividades</a>
+          <a href="alojamientos.html">Alojamiento</a>
+        </div>
+        
+        <div class="footer-col">
+          <a href="emprendimientos.html">Emprendimientos</a>
+          <a href="eventos.html">Eventos</a>
+        </div>
+        
+        <div class="footer-col">
+          <a href="#registro" class="footer-register-link" id="footerRegisterBtn">Registro</a>
+        </div>
+        
+        <!-- Social Column -->
+        <div class="footer-col footer-social-col">
+          <a href="#" aria-label="Facebook" class="social-link">
+            <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+          </a>
+          <a href="#" aria-label="TikTok" class="social-link">
+            <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path></svg>
+          </a>
+          <a href="#" aria-label="Instagram" class="social-link">
+            <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; Copyright 2026 Todos los derechos reservados casa macondo</p>
+      </div>
+    </footer>
+
+    <!-- Standard Login Modal (imported via modal.js) -->
+    <div class="modal-overlay" id="authModal">
+      <div class="modal-card">
+        <button class="modal-close-btn" id="closeModalBtn" aria-label="Cerrar ventana">&times;</button>
+        <div class="modal-left">
+          <!-- Register Form -->
+          <div class="auth-view" id="registerView">
+            <h2 class="auth-title">Registro</h2>
+            <form class="auth-form" id="registerForm">
+              <div class="input-group">
+                <label for="regName">Nombre</label>
+                <div class="input-wrapper">
+                  <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                  <input type="text" id="regName" placeholder="Nombre completo" required />
+                </div>
+              </div>
+              <div class="input-group">
+                <label for="regEmail">Correo</label>
+                <div class="input-wrapper">
+                  <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                  <input type="email" id="regEmail" placeholder="correo@ejemplo.com" required />
+                </div>
+              </div>
+              <div class="input-group">
+                <label for="regPassword">Contraseña</label>
+                <div class="input-wrapper">
+                  <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                  <input type="password" id="regPassword" placeholder="Mínimo 6 caracteres" required />
+                </div>
+              </div>
+              <div class="input-group">
+                <label for="regConfirmPassword">Confirmar contraseña</label>
+                <div class="input-wrapper">
+                  <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path><path d="M12 15v3"></path></svg>
+                  <input type="password" id="regConfirmPassword" placeholder="Repite tu contraseña" required />
+                </div>
+              </div>
+              <div class="input-group">
+                <label for="regPhone">Teléfono</label>
+                <div class="input-wrapper">
+                  <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                  <input type="tel" id="regPhone" placeholder="Ej: +57 300 123 4567" required />
+                </div>
+              </div>
+              <button type="submit" class="btn-confirmar">Confirmar</button>
+            </form>
+            <div class="auth-switch">
+              <span>¿Ya tienes una cuenta? <button type="button" class="btn-switch-view" id="toLoginBtn">Inicia sesión</button></span>
+            </div>
+          </div>
+
+          <!-- Login Form (Initially Hidden) -->
+          <div class="auth-view hidden" id="loginView">
+            <h2 class="auth-title">Iniciar Sesión</h2>
+            <form class="auth-form" id="loginForm">
+              <div class="input-group">
+                <label for="loginEmail">Correo</label>
+                <div class="input-wrapper">
+                  <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                  <input type="email" id="loginEmail" placeholder="correo@ejemplo.com" required />
+                </div>
+              </div>
+              <div class="input-group">
+                <label for="loginPassword">Contraseña</label>
+                <div class="input-wrapper">
+                  <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                  <input type="password" id="loginPassword" placeholder="Ingresa tu contraseña" required />
+                </div>
+              </div>
+              <button type="submit" class="btn-confirmar">Ingresar</button>
+            </form>
+            <div class="auth-switch">
+              <span>¿No tienes una cuenta? <button type="button" class="btn-switch-view" id="toRegisterBtn">Regístrate</button></span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-right">
+          <img src="img/logo_beige.png" alt="Casa Macondo Logo" class="modal-logo" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Dynamic Modal: Add/Edit Activity (Admin only) -->
+    <div class="modal-overlay" id="activityModal">
+      <div class="modal-card crud-modal-card">
+        <button class="modal-close-btn" id="closeActivityModalBtn" aria-label="Cerrar ventana">&times;</button>
+        <div class="crud-modal-content">
+          <h2 class="auth-title" id="activityModalTitle">Agregar Actividad</h2>
+          <form id="activityForm" class="auth-form">
+            <input type="hidden" id="activityIdField" />
+            
+            <div class="input-group">
+              <label for="activityNameField">Nombre de la Actividad</label>
+              <div class="input-wrapper no-icon">
+                <input type="text" id="activityNameField" placeholder="Ej: Sendero Ecológico a las Cascadas" required />
+              </div>
+            </div>
+
+            <div class="form-row-two">
+              <div class="input-group">
+                <label for="activityCategoryField">Categoría</label>
+                <div class="input-wrapper no-icon">
+                  <select id="activityCategoryField" required>
+                    <option value="" disabled selected>Selecciona una categoría</option>
+                    <option value="Aventura">Aventura</option>
+                    <option value="Bienestar">Bienestar</option>
+                    <option value="Naturaleza">Naturaleza</option>
+                    <option value="Gastronomía">Gastronomía</option>
+                    <option value="Cultura">Cultura</option>
+                  </select>
+                </div>
+              </div>
+              <div class="input-group">
+                <!-- Empty for alignment -->
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label for="activityDescField">Descripción</label>
+              <textarea id="activityDescField" rows="4" placeholder="Describe los detalles de la actividad..." required></textarea>
+            </div>
+
+            <div class="form-row-two">
+              <div class="input-group">
+                <label for="activityImgPrincipalField">Imagen Principal</label>
+                <div class="input-wrapper no-icon">
+                  <input type="text" id="activityImgPrincipalField" placeholder="Ej: img/cascadas_main.png" required />
+                </div>
+              </div>
+              <div class="input-group">
+                <label for="activityImgSecundariaField">Imagen Secundaria</label>
+                <div class="input-wrapper no-icon">
+                  <input type="text" id="activityImgSecundariaField" placeholder="Ej: img/cascadas_sec.png" />
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row-two">
+              <div class="input-group">
+                <label for="activityLatitudeField">Latitud</label>
+                <div class="input-wrapper no-icon">
+                  <input type="number" id="activityLatitudeField" step="any" placeholder="Ej: 7.6111" />
+                </div>
+              </div>
+              <div class="input-group">
+                <label for="activityLongitudeField">Longitud</label>
+                <div class="input-wrapper no-icon">
+                  <input type="number" id="activityLongitudeField" step="any" placeholder="Ej: -72.6322" />
+                </div>
+              </div>
+            </div>
+
+            <button type="submit" class="btn-confirmar" id="btnSaveActivity">Guardar Actividad</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dynamic Modal: Add/Edit Accommodation (Admin only) -->
+    <div class="modal-overlay" id="accommodationModal">
+      <div class="modal-card crud-modal-card large-crud-modal">
+        <button class="modal-close-btn" id="closeAccommodationModalBtn" aria-label="Cerrar ventana">&times;</button>
+        <div class="crud-modal-content">
+          <h2 class="auth-title" id="accommodationModalTitle">Agregar Alojamiento</h2>
+          <form id="accommodationForm" class="auth-form">
+            <input type="hidden" id="accommodationIdField" />
+            
+            <div class="form-row-two">
+              <div class="input-group">
+                <label for="accommodationNameField">Nombre del Hospedaje</label>
+                <div class="input-wrapper no-icon">
+                  <input type="text" id="accommodationNameField" placeholder="Ej: Eco-Villa Romántica" required />
+                </div>
+              </div>
+              <div class="input-group">
+                <label for="accommodationPriceField">Precio por Noche (COP)</label>
+                <div class="input-wrapper no-icon">
+                  <input type="number" id="accommodationPriceField" placeholder="Ej: 350000" min="0" required />
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row-three">
+              <div class="input-group">
+                <label for="accommodationCapacityField">Capacidad Máxima</label>
+                <div class="input-wrapper no-icon">
+                  <input type="number" id="accommodationCapacityField" placeholder="Huéspedes" min="1" required />
+                </div>
+              </div>
+              <div class="input-group">
+                <label for="accommodationRoomsField">Habitaciones</label>
+                <div class="input-wrapper no-icon">
+                  <input type="number" id="accommodationRoomsField" placeholder="Habitaciones" min="1" required />
+                </div>
+              </div>
+              <div class="input-group">
+                <label for="accommodationBedsField">Camas</label>
+                <div class="input-wrapper no-icon">
+                  <input type="number" id="accommodationBedsField" placeholder="Camas" min="1" required />
+                </div>
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label for="accommodationDescField">Descripción</label>
+              <textarea id="accommodationDescField" rows="3" placeholder="Describe los detalles del hospedaje..." required></textarea>
+            </div>
+
+            <div class="input-group">
+              <label for="accommodationServicesField">Servicios (Separados por coma)</label>
+              <div class="input-wrapper no-icon">
+                <input type="text" id="accommodationServicesField" placeholder="Ej: Ofuro Privado, Wifi de alta velocidad, Agua Caliente, Desayuno Incluido" required />
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label for="accommodationMapField">Google Maps Embed URL</label>
+              <div class="input-wrapper no-icon">
+                <input type="text" id="accommodationMapField" placeholder="https://www.google.com/maps/embed?pb=..." />
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label for="accommodationImagesField">Galería de Imágenes (Rutas separadas por coma, máx. 3)</label>
+              <div class="input-wrapper no-icon">
+                <input type="text" id="accommodationImagesField" placeholder="Ej: img/ofuro_1.png, img/ofuro_2.png, img/ofuro_3.png" required />
+              </div>
+            </div>
+
+            <button type="submit" class="btn-confirmar" id="btnSaveAccommodation">Guardar Alojamiento</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dynamic Modal: Add/Edit Venture -->
+    <div class="modal-overlay" id="ventureModal">
+      <div class="modal-card crud-modal-card">
+        <button class="modal-close-btn" id="closeVentureModalBtn" aria-label="Cerrar ventana">&times;</button>
+        <div class="crud-modal-content">
+          <h2 class="auth-title" id="ventureModalTitle">Agregar Emprendimiento</h2>
+          <form id="ventureForm" class="auth-form">
+            <input type="hidden" id="ventureIdField" />
+            
+            <div class="input-group">
+              <label for="ventureNameField">Nombre del Emprendimiento</label>
+              <div class="input-wrapper no-icon">
+                <input type="text" id="ventureNameField" placeholder="Ej: Café Don Macondo" required />
+              </div>
+            </div>
+
+            <div class="form-row-two">
+              <div class="input-group">
+                <label for="ventureCategoryField">Categoría</label>
+                <div class="input-wrapper no-icon">
+                  <select id="ventureCategoryField" required>
+                    <option value="" disabled selected>Selecciona una categoría</option>
+                    <option value="Gastronomía">Gastronomía</option>
+                    <option value="Artesanías">Artesanías</option>
+                    <option value="Guías">Guías</option>
+                    <option value="Otros">Otros</option>
+                  </select>
+                </div>
+              </div>
+              <div class="input-group">
+                <label for="ventureContactField">Contacto (Teléfono/Email)</label>
+                <div class="input-wrapper no-icon">
+                  <input type="text" id="ventureContactField" placeholder="Ej: +57 301 234 5678" required />
+                </div>
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label for="ventureDescField">Descripción</label>
+              <textarea id="ventureDescField" rows="4" placeholder="Describe lo que ofrece tu negocio..." required></textarea>
+            </div>
+
+            <div class="input-group">
+              <label for="ventureImgField">Imagen del Emprendimiento (URL o Ruta)</label>
+              <div class="input-wrapper no-icon">
+                <input type="text" id="ventureImgField" placeholder="Ej: img/turismo_main.png" required />
+              </div>
+            </div>
+
+            <button type="submit" class="btn-confirmar" id="btnSaveVenture">Guardar Emprendimiento</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dynamic Modal: Add/Edit Event (Admin only) -->
+    <div class="modal-overlay" id="eventModal">
+      <div class="modal-card crud-modal-card">
+        <button class="modal-close-btn" id="closeEventModalBtn" aria-label="Cerrar ventana">&times;</button>
+        <div class="crud-modal-content">
+          <h2 class="auth-title" id="eventModalTitle">Agregar Evento</h2>
+          <form id="eventForm" class="auth-form">
+            <input type="hidden" id="eventIdField" />
+            
+            <div class="input-group">
+              <label for="eventTitleField">Título del Evento</label>
+              <div class="input-wrapper no-icon">
+                <input type="text" id="eventTitleField" placeholder="Ej: Festival de Danza Folclórica" required />
+              </div>
+            </div>
+
+            <div class="form-row-two">
+              <div class="input-group">
+                <label for="eventDateField">Fecha</label>
+                <div class="input-wrapper no-icon">
+                  <input type="date" id="eventDateField" required />
+                </div>
+              </div>
+              <div class="input-group">
+                <label for="eventTimeField">Hora (Opcional)</label>
+                <div class="input-wrapper no-icon">
+                  <input type="time" id="eventTimeField" />
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row-two">
+              <div class="input-group">
+                <label for="eventPlaceField">Lugar</label>
+                <div class="input-wrapper no-icon">
+                  <input type="text" id="eventPlaceField" placeholder="Ej: Parque Principal" required />
+                </div>
+              </div>
+              <div class="input-group">
+                <label for="eventOrganizerField">Organizador</label>
+                <div class="input-wrapper no-icon">
+                  <input type="text" id="eventOrganizerField" placeholder="Ej: Casa de la Cultura" required />
+                </div>
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label for="eventDescField">Descripción</label>
+              <textarea id="eventDescField" rows="4" placeholder="Describe los detalles del evento..." required></textarea>
+            </div>
+
+            <div class="input-group">
+              <label for="eventImgField">Imagen del Evento (URL o Ruta, Opcional)</label>
+              <div class="input-wrapper no-icon">
+                <input type="text" id="eventImgField" placeholder="Ej: img/sitios_main.png" />
+              </div>
+            </div>
+
+            <button type="submit" class="btn-confirmar" id="btnSaveEvent">Guardar Evento</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/modal.js"></script>
+    <script src="js/cuenta.js" defer></script>
+  </body>
+</html>

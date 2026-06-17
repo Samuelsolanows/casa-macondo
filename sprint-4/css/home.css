@@ -1,0 +1,202 @@
+/* ==========================================
+   Hero Container & Reservation Bar (Home Page)
+   ========================================== */
+.hero-container {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  background: url('../img/hero_bg.png') no-repeat center center/cover;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 0 2rem;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.45) 0%,
+    rgba(0, 0, 0, 0.25) 50%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1000px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 4rem;
+}
+
+.hero-title {
+  font-family: var(--font-heading);
+  font-size: 4.8rem;
+  font-weight: 600;
+  color: var(--color-cream);
+  margin-bottom: 7.5rem;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 15px rgba(0, 0, 0, 0.4);
+  line-height: 1.1;
+}
+
+/* Booking Search Bar */
+.booking-search-bar {
+  display: flex;
+  align-items: center;
+  background-color: var(--color-cream-transparent);
+  border-radius: 100px;
+  padding: 0.6rem 0.6rem 0.6rem 2.2rem;
+  gap: 1.5rem;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  width: 100%;
+  max-width: 1120px;
+  justify-content: space-between;
+}
+
+.booking-field {
+  position: relative;
+}
+
+.date-field {
+  background-color: var(--color-dark-green);
+  color: var(--color-cream);
+  padding: 1rem 2.5rem;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  flex: 1;
+  max-width: 260px;
+  min-width: 180px;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  user-select: none;
+  transition: background-color var(--transition-speed), transform 0.2s, box-shadow var(--transition-speed);
+}
+
+.date-field:hover {
+  background-color: var(--color-dark-green-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.date-field:active {
+  transform: translateY(0);
+}
+
+.hidden-date-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  pointer-events: none;
+}
+
+/* Arrow Connector */
+.arrow-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-dark-green);
+  flex-shrink: 0;
+}
+
+.arrow-icon {
+  stroke: var(--color-dark-green);
+}
+
+/* Vertical Line Divider */
+.vertical-line {
+  height: 40px;
+  width: 1.5px;
+  background-color: rgba(14, 51, 39, 0.3);
+  margin: 0 0.8rem;
+  flex-shrink: 0;
+}
+
+/* Promo Code Field */
+.promo-field {
+  display: flex;
+  align-items: center;
+  flex: 1.2;
+  max-width: 300px;
+}
+
+.promo-input {
+  background-color: var(--color-dark-green);
+  color: var(--color-cream);
+  border: none;
+  border-radius: 50px;
+  padding: 1rem 2rem;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 500;
+  text-align: center;
+  width: 100%;
+  outline: none;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: background-color var(--transition-speed), box-shadow var(--transition-speed), transform 0.2s;
+}
+
+.promo-input::placeholder {
+  color: rgba(244, 239, 233, 0.65);
+}
+
+.promo-input:focus {
+  background-color: var(--color-dark-green-hover);
+  box-shadow: 0 4px 12px rgba(14, 51, 39, 0.25);
+  transform: translateY(-1px);
+}
+
+/* Search Button */
+.btn-buscar {
+  background-color: var(--color-dark-green);
+  color: var(--color-cream);
+  border: none;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  transition: background-color var(--transition-speed), transform 0.2s, box-shadow var(--transition-speed);
+}
+
+.btn-buscar:hover {
+  background-color: var(--color-dark-green-hover);
+  transform: scale(1.06) translateY(-1px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+}
+
+.btn-buscar:active {
+  transform: scale(0.96);
+}
+
+.search-icon {
+  stroke: var(--color-cream);
+  transition: transform var(--transition-speed);
+}
+
+.btn-buscar:hover .search-icon {
+  transform: rotate(5deg);
+}
