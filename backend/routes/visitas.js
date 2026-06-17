@@ -64,10 +64,11 @@ router.get('/stats', verifyAdmin, async (req, res) => {
     const [visitsByDay] = await db.query(`
       SELECT DATE_FORMAT(fecha_hora, '%Y-%m-%d') as date, COUNT(*) as count 
       FROM visitas 
-      GROUP BY DATE(fecha_hora) 
+      GROUP BY DATE_FORMAT(fecha_hora, '%Y-%m-%d') 
       ORDER BY date ASC
       LIMIT 15
     `);
+
 
     res.json({
       totalVisits,
