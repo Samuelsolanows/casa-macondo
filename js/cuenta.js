@@ -18,6 +18,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const currentUser = JSON.parse(userJson);
 
+  // Chart instances (Sprint 4)
+  let chartPagesInstance = null;
+  let chartDaysInstance = null;
+
   // ---- Elementos comunes de la interfaz ----
   const userSidebarName = document.getElementById('userSidebarName');
   const userSidebarRole = document.getElementById('userSidebarRole');
@@ -30,39 +34,59 @@ document.addEventListener('DOMContentLoaded', () => {
   userAvatarLetter.textContent = currentUser.nombre.charAt(0).toUpperCase();
   profileRoleText.textContent = currentUser.id_rol === 1 ? 'Administrador' : 'Usuario';
 
-  // Mostrar tabs de admin si es administrador (id_rol === 1)
-  if (currentUser.id_rol === 1) {
-    document.getElementById('tabAdminActivities').classList.remove('hidden');
-    document.getElementById('tabAdminAccommodations').classList.remove('hidden');
-  }
-
   // ---- Manejo de Tabs (Pestañas) ----
   const tabButtons = document.querySelectorAll('.tab-btn');
   const sections = document.querySelectorAll('.account-section');
 
+  function activateTab(tabName) {
+    tabButtons.forEach(btn => {
+      if (btn.getAttribute('data-tab') === tabName) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+
+    sections.forEach(sec => {
+      if (sec.id === `${tabName}Section`) {
+        sec.classList.add('active');
+        sec.style.display = 'block';
+      } else {
+        sec.classList.remove('active');
+        sec.style.display = 'none';
+      }
+    });
+
+    // Cargar datos
+    if (tabName === 'activities') {
+      loadActivities();
+    } else if (tabName === 'accommodations') {
+      loadAccommodations();
+    } else if (tabName === 'ventures') {
+      loadVentures();
+    } else if (tabName === 'events') {
+      loadEvents();
+    } else if (tabName === 'stats') {
+      loadStats();
+    }
+  }
+
   tabButtons.forEach(btn => {
     btn.addEventListener('click', () => {
       const targetTab = btn.getAttribute('data-tab');
-
-      // Activar botón
-      tabButtons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-
-      // Activar sección
-      sections.forEach(sec => sec.classList.remove('active'));
-      const activeSection = document.getElementById(`${targetTab}Section`);
-      if (activeSection) {
-        activeSection.classList.add('active');
-      }
-
-      // Cargar datos si se cambia a una sección CRUD
-      if (targetTab === 'activities') {
-        loadActivities();
-      } else if (targetTab === 'accommodations') {
-        loadAccommodations();
-      }
+      activateTab(targetTab);
     });
   });
+
+  // Mostrar tabs de admin si es administrador (id_rol === 1)
+  if (currentUser.id_rol === 1) {
+    document.getElementById('tabAdminActivities').classList.remove('hidden');
+    document.getElementById('tabAdminAccommodations').classList.remove('hidden');
+    document.getElementById('tabAdminEvents').classList.remove('hidden');
+    document.getElementById('tabAdminStats').classList.remove('hidden');
+  }
+  // Activar pestaña por defecto para todos: Mi Perfil
+  activateTab('profile');
 
   // ---- Lógica de Perfil (Actualizar datos) ----
   const profileForm = document.getElementById('profileForm');
@@ -196,7 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const tr = document.createElement('tr');
       tr.innerHTML = `
         <td>${act.id_actividad}</td>
-        <td><img src="${act.imagen_principal}" alt="${act.nombre}" class="table-img" onerror="this.src='img/fogata_main.png'" /></td>
+        <td><img src="${act.imagen_ruta || act.imagen_principal}" alt="${act.nombre}" class="table-img" onerror="this.src='img/fogata_main.png'" /></td>
         <td><strong>${act.nombre}</strong></td>
         <td><span class="role-badge">${act.categoria}</span></td>
         <td class="table-desc-cell">${act.descripcion}</td>
@@ -244,8 +268,10 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('activityNameField').value = act.nombre;
     document.getElementById('activityCategoryField').value = act.categoria;
     document.getElementById('activityDescField').value = act.descripcion;
-    document.getElementById('activityImgPrincipalField').value = act.imagen_principal;
-    document.getElementById('activityImgSecundariaField').value = act.imagen_secondary || act.imagen_secundaria || '';
+    document.getElementById('activityImgPrincipalField').value = act.imagen_ruta || act.imagen_principal || '';
+    document.getElementById('activityImgSecundariaField').value = act.imagen_secundaria_ruta || act.imagen_secondary || act.imagen_secundaria || '';
+    document.getElementById('activityLatitudeField').value = act.latitud || '';
+    document.getElementById('activityLongitudeField').value = act.longitud || '';
     
     activityModal.classList.add('active');
   }
@@ -261,6 +287,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const descripcion = document.getElementById('activityDescField').value.trim();
       const imagen_principal = document.getElementById('activityImgPrincipalField').value.trim();
       const imagen_secundaria = document.getElementById('activityImgSecundariaField').value.trim();
+      const latitud = document.getElementById('activityLatitudeField').value.trim();
+      const longitud = document.getElementById('activityLongitudeField').value.trim();
 
       const method = id ? 'PUT' : 'POST';
       const endpoint = id ? `${API_URL}/actividades/${id}` : `${API_URL}/actividades`;
@@ -272,7 +300,7 @@ document.addEventListener('DOMContentLoaded', () => {
             'Content-Type': 'application/json',
             'x-user-id': currentUser.id_usuario
           },
-          body: JSON.stringify({ nombre, categoria, descripcion, imagen_principal, imagen_secundaria })
+          body: JSON.stringify({ nombre, categoria, descripcion, imagen_principal, imagen_secundaria, latitud, longitud })
         });
 
         const data = await response.json();
@@ -517,6 +545,398 @@ document.addEventListener('DOMContentLoaded', () => {
       loadAccommodations();
     } catch (err) {
       alert(err.message);
+    }
+  }
+
+
+  // ---- CRUD: MIS EMPRENDIMIENTOS ----
+  let allVentures = [];
+  const venturesTableBody = document.getElementById('venturesTableBody');
+  const btnAddVenture = document.getElementById('btnAddVenture');
+  const ventureModal = document.getElementById('ventureModal');
+  const closeVentureModalBtn = document.getElementById('closeVentureModalBtn');
+  const ventureForm = document.getElementById('ventureForm');
+  const ventureModalTitle = document.getElementById('ventureModalTitle');
+  const ventureIdField = document.getElementById('ventureIdField');
+
+  async function loadVentures() {
+    try {
+      if (venturesTableBody) {
+        venturesTableBody.innerHTML = '<tr><td colspan="7" class="table-empty-state">Cargando emprendimientos...</td></tr>';
+      }
+      const response = await fetch(`${API_URL}/emprendimientos/mis-negocios`, {
+        headers: { 'x-user-id': currentUser.id_usuario }
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || 'No se pudieron cargar los emprendimientos.');
+      }
+      allVentures = data;
+      renderVenturesTable(allVentures);
+    } catch (err) {
+      if (venturesTableBody) {
+        venturesTableBody.innerHTML = `<tr><td colspan="7" class="table-empty-state text-error">Error: ${err.message}</td></tr>`;
+      }
+    }
+  }
+
+  function renderVenturesTable(list) {
+    if (!venturesTableBody) return;
+    if (list.length === 0) {
+      venturesTableBody.innerHTML = '<tr><td colspan="7" class="table-empty-state">No tienes emprendimientos registrados.</td></tr>';
+      return;
+    }
+    venturesTableBody.innerHTML = '';
+    list.forEach(v => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${v.id_emprendimiento}</td>
+        <td><img src="${v.imagen_ruta}" alt="${v.nombre}" class="table-img" onerror="this.src='img/sitios_main.png'" /></td>
+        <td><strong>${v.nombre}</strong></td>
+        <td><span class="role-badge">${v.categoria}</span></td>
+        <td>${v.contacto}</td>
+        <td class="table-desc-cell">${v.descripcion}</td>
+        <td>
+          <div class="table-actions">
+            <button class="btn-table-edit" title="Editar" data-id="${v.id_emprendimiento}">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+            </button>
+            <button class="btn-table-delete" title="Eliminar" data-id="${v.id_emprendimiento}">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+            </button>
+          </div>
+        </td>
+      `;
+      tr.querySelector('.btn-table-edit').addEventListener('click', () => openEditVentureModal(v));
+      tr.querySelector('.btn-table-delete').addEventListener('click', () => deleteVenture(v.id_emprendimiento, v.nombre));
+      venturesTableBody.appendChild(tr);
+    });
+  }
+
+  if (btnAddVenture) {
+    btnAddVenture.addEventListener('click', () => {
+      ventureModalTitle.textContent = 'Agregar Emprendimiento';
+      ventureIdField.value = '';
+      ventureForm.reset();
+      ventureModal.classList.add('active');
+    });
+  }
+
+  if (closeVentureModalBtn) {
+    closeVentureModalBtn.addEventListener('click', () => {
+      ventureModal.classList.remove('active');
+    });
+  }
+
+  function openEditVentureModal(v) {
+    ventureModalTitle.textContent = 'Editar Emprendimiento';
+    ventureIdField.value = v.id_emprendimiento;
+    document.getElementById('ventureNameField').value = v.nombre;
+    document.getElementById('ventureCategoryField').value = v.categoria;
+    document.getElementById('ventureContactField').value = v.contacto;
+    document.getElementById('ventureDescField').value = v.descripcion;
+    document.getElementById('ventureImgField').value = v.imagen_ruta;
+    ventureModal.classList.add('active');
+  }
+
+  if (ventureForm) {
+    ventureForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = ventureIdField.value;
+      const nombre = document.getElementById('ventureNameField').value.trim();
+      const categoria = document.getElementById('ventureCategoryField').value;
+      const contacto = document.getElementById('ventureContactField').value.trim();
+      const descripcion = document.getElementById('ventureDescField').value.trim();
+      const imagen_ruta = document.getElementById('ventureImgField').value.trim();
+
+      const method = id ? 'PUT' : 'POST';
+      const endpoint = id ? `${API_URL}/emprendimientos/${id}` : `${API_URL}/emprendimientos`;
+
+      try {
+        const response = await fetch(endpoint, {
+          method: method,
+          headers: {
+            'Content-Type': 'application/json',
+            'x-user-id': currentUser.id_usuario
+          },
+          body: JSON.stringify({ nombre, categoria, contacto, descripcion, imagen_ruta })
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'Error al guardar el emprendimiento.');
+        alert(id ? 'Emprendimiento actualizado.' : 'Emprendimiento registrado.');
+        ventureModal.classList.remove('active');
+        loadVentures();
+      } catch (err) {
+        alert(err.message);
+      }
+    });
+  }
+
+  async function deleteVenture(id, nombre) {
+    if (!confirm(`¿Estás seguro de que deseas eliminar el emprendimiento "${nombre}"?`)) return;
+    try {
+      const response = await fetch(`${API_URL}/emprendimientos/${id}`, {
+        method: 'DELETE',
+        headers: { 'x-user-id': currentUser.id_usuario }
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Error al eliminar.');
+      alert('Emprendimiento eliminado.');
+      loadVentures();
+    } catch (err) {
+      alert(err.message);
+    }
+  }
+
+  // ---- CRUD: ADMINISTRACIÓN DE EVENTOS ----
+  let allEvents = [];
+  const eventsTableBody = document.getElementById('eventsTableBody');
+  const btnAddEvent = document.getElementById('btnAddEvent');
+  const eventModal = document.getElementById('eventModal');
+  const closeEventModalBtn = document.getElementById('closeEventModalBtn');
+  const eventForm = document.getElementById('eventForm');
+  const eventModalTitle = document.getElementById('eventModalTitle');
+  const eventIdField = document.getElementById('eventIdField');
+
+  async function loadEvents() {
+    try {
+      if (eventsTableBody) {
+        eventsTableBody.innerHTML = '<tr><td colspan="7" class="table-empty-state">Cargando eventos...</td></tr>';
+      }
+      const response = await fetch(`${API_URL}/eventos`);
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || 'No se pudieron cargar los eventos.');
+      }
+      allEvents = data;
+      renderEventsTable(allEvents);
+    } catch (err) {
+      if (eventsTableBody) {
+        eventsTableBody.innerHTML = `<tr><td colspan="7" class="table-empty-state text-error">Error: ${err.message}</td></tr>`;
+      }
+    }
+  }
+
+  function renderEventsTable(list) {
+    if (!eventsTableBody) return;
+    if (list.length === 0) {
+      eventsTableBody.innerHTML = '<tr><td colspan="7" class="table-empty-state">No hay eventos programados.</td></tr>';
+      return;
+    }
+    eventsTableBody.innerHTML = '';
+    list.forEach(evt => {
+      const dateStr = evt.fecha ? evt.fecha.split('T')[0] : '';
+      const timeStr = evt.hora || 'Por confirmar';
+
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${evt.id_evento}</td>
+        <td><img src="${evt.imagen_ruta || 'img/sitios_main.png'}" alt="${evt.titulo}" class="table-img" onerror="this.src='img/sitios_main.png'" /></td>
+        <td><strong>${evt.titulo}</strong></td>
+        <td>${dateStr} <br/><small>${timeStr}</small></td>
+        <td>${evt.lugar}</td>
+        <td>${evt.organizador}</td>
+        <td>
+          <div class="table-actions">
+            <button class="btn-table-edit" title="Editar" data-id="${evt.id_evento}">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+            </button>
+            <button class="btn-table-delete" title="Eliminar" data-id="${evt.id_evento}">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+            </button>
+          </div>
+        </td>
+      `;
+      tr.querySelector('.btn-table-edit').addEventListener('click', () => openEditEventModal(evt));
+      tr.querySelector('.btn-table-delete').addEventListener('click', () => deleteEvent(evt.id_evento, evt.titulo));
+      eventsTableBody.appendChild(tr);
+    });
+  }
+
+  if (btnAddEvent) {
+    btnAddEvent.addEventListener('click', () => {
+      eventModalTitle.textContent = 'Agregar Evento';
+      eventIdField.value = '';
+      eventForm.reset();
+      eventModal.classList.add('active');
+    });
+  }
+
+  if (closeEventModalBtn) {
+    closeEventModalBtn.addEventListener('click', () => {
+      eventModal.classList.remove('active');
+    });
+  }
+
+  function openEditEventModal(evt) {
+    eventModalTitle.textContent = 'Editar Evento';
+    eventIdField.value = evt.id_evento;
+    document.getElementById('eventTitleField').value = evt.titulo;
+    const dateStr = evt.fecha ? evt.fecha.split('T')[0] : '';
+    document.getElementById('eventDateField').value = dateStr;
+    document.getElementById('eventTimeField').value = evt.hora || '';
+    document.getElementById('eventPlaceField').value = evt.lugar;
+    document.getElementById('eventOrganizerField').value = evt.organizador;
+    document.getElementById('eventImgField').value = evt.imagen_ruta || '';
+    document.getElementById('eventDescField').value = evt.descripcion;
+    eventModal.classList.add('active');
+  }
+
+  if (eventForm) {
+    eventForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = eventIdField.value;
+      const titulo = document.getElementById('eventTitleField').value.trim();
+      const fecha = document.getElementById('eventDateField').value;
+      const hora = document.getElementById('eventTimeField').value || null;
+      const lugar = document.getElementById('eventPlaceField').value.trim();
+      const organizador = document.getElementById('eventOrganizerField').value.trim();
+      const imagen_ruta = document.getElementById('eventImgField').value.trim() || null;
+      const descripcion = document.getElementById('eventDescField').value.trim();
+
+      const method = id ? 'PUT' : 'POST';
+      const endpoint = id ? `${API_URL}/eventos/${id}` : `${API_URL}/eventos`;
+
+      try {
+        const response = await fetch(endpoint, {
+          method: method,
+          headers: {
+            'Content-Type': 'application/json',
+            'x-user-id': currentUser.id_usuario
+          },
+          body: JSON.stringify({ titulo, fecha, hora, lugar, organizador, imagen_ruta, descripcion })
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'Error al guardar el evento.');
+        alert(id ? 'Evento actualizado.' : 'Evento publicado.');
+        eventModal.classList.remove('active');
+        loadEvents();
+      } catch (err) {
+        alert(err.message);
+      }
+    });
+  }
+
+  async function deleteEvent(id, titulo) {
+    if (!confirm(`¿Estás seguro de que deseas eliminar el evento "${titulo}"?`)) return;
+    try {
+      const response = await fetch(`${API_URL}/eventos/${id}`, {
+        method: 'DELETE',
+        headers: { 'x-user-id': currentUser.id_usuario }
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Error al eliminar.');
+      alert('Evento eliminado.');
+      loadEvents();
+    } catch (err) {
+      alert(err.message);
+    }
+  }
+
+  // ---- CARGAR ESTADÍSTICAS Y GRÁFICOS (Sprint 4) ----
+  async function loadStats() {
+    try {
+      const response = await fetch(`${API_URL}/visitas/stats`, {
+        headers: { 'x-user-id': currentUser.id_usuario }
+      });
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.error || 'No se pudieron cargar las estadísticas.');
+      }
+      
+      // Llenar tarjetas
+      document.getElementById('statsTotalVisits').textContent = data.totalVisits;
+      document.getElementById('statsTotalUsers').textContent = data.totalUsers;
+      document.getElementById('statsMostVisitedPage').textContent = data.visitsByPage.length > 0 ? data.visitsByPage[0].ruta : '-';
+      
+      // Preparar datos para Gráfico de Páginas
+      const pageLabels = data.visitsByPage.map(item => item.ruta);
+      const pageCounts = data.visitsByPage.map(item => item.count);
+      
+      // Destruir gráficos anteriores si existen
+      if (chartPagesInstance) chartPagesInstance.destroy();
+      if (chartDaysInstance) chartDaysInstance.destroy();
+      
+      // Gráfico de Páginas (Bar)
+      const ctxPages = document.getElementById('chartPages').getContext('2d');
+      chartPagesInstance = new Chart(ctxPages, {
+        type: 'bar',
+        data: {
+          labels: pageLabels,
+          datasets: [{
+            label: 'Visitas',
+            data: pageCounts,
+            backgroundColor: 'rgba(11, 61, 46, 0.75)',
+            borderColor: '#0b3d2e',
+            borderWidth: 1.5,
+            borderRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              grid: { color: 'rgba(243, 233, 228, 0.08)' },
+              ticks: { color: 'rgba(243, 233, 228, 0.7)' }
+            },
+            x: {
+              grid: { display: false },
+              ticks: { color: 'rgba(243, 233, 228, 0.7)' }
+            }
+          }
+        }
+      });
+      
+      // Preparar datos para Gráfico de Días
+      const dayLabels = data.visitsByDay.map(item => item.date);
+      const dayCounts = data.visitsByDay.map(item => item.count);
+      
+      // Gráfico de Días (Line)
+      const ctxDays = document.getElementById('chartDays').getContext('2d');
+      chartDaysInstance = new Chart(ctxDays, {
+        type: 'line',
+        data: {
+          labels: dayLabels,
+          datasets: [{
+            label: 'Visitas Diarias',
+            data: dayCounts,
+            fill: true,
+            backgroundColor: 'rgba(11, 61, 46, 0.25)',
+            borderColor: '#0b3d2e',
+            borderWidth: 3,
+            tension: 0.3,
+            pointBackgroundColor: '#f3e9e4',
+            pointBorderColor: '#0b3d2e',
+            pointRadius: 4,
+            pointHoverRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              grid: { color: 'rgba(243, 233, 228, 0.08)' },
+              ticks: { color: 'rgba(243, 233, 228, 0.7)' }
+            },
+            x: {
+              grid: { display: false },
+              ticks: { color: 'rgba(243, 233, 228, 0.7)' }
+            }
+          }
+        }
+      });
+      
+    } catch (err) {
+      console.error('Error al cargar estadísticas:', err);
     }
   }
 

@@ -14,9 +14,9 @@
     <header class="site-header">
       <nav class="nav-menu nav-left">
         <a href="actividades.html">Actividades</a>
-        <a href="#como-llegar">¿Cómo llegar?</a>
         <a href="alojamientos.html">Alojamiento</a>
-        <a href="#tienda">Tienda</a>
+        <a href="emprendimientos.html">Emprendimientos</a>
+        <a href="eventos.html">Eventos</a>
       </nav>
 
       <div class="logo">
@@ -24,7 +24,6 @@
       </div>
 
       <nav class="nav-menu nav-right">
-        <a href="#contacto">Contacto</a>
         <button class="btn-reservar">Reservar</button>
         <a href="#menu" class="menu-toggle">
           <svg class="menu-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -42,7 +41,7 @@
       <div class="hero-content">
         <h1 class="hero-title">Bienvenidos a Casa Macondo</h1>
         
-        <form class="booking-search-bar" id="bookingForm" onsubmit="event.preventDefault(); alert('Buscando disponibilidad...');">
+        <form class="booking-search-bar" id="bookingForm" onsubmit="event.preventDefault(); window.location.href='alojamientos.html';">
           <!-- Check-in Field -->
           <div class="booking-field date-field" id="Field_ida">
             <span class="field-value" id="Val_ida">Abr 25, 2026</span>

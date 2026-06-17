@@ -15,10 +15,16 @@ app.use(express.json());
 const authRoutes = require('./routes/auth');
 const actividadesRoutes = require('./routes/actividades');
 const alojamientosRoutes = require('./routes/alojamientos');
+const emprendimientosRoutes = require('./routes/emprendimientos');
+const eventosRoutes = require('./routes/eventos');
+const visitasRoutes = require('./routes/visitas');
 
 app.use('/api', authRoutes);
 app.use('/api/actividades', actividadesRoutes);
 app.use('/api/alojamientos', alojamientosRoutes);
+app.use('/api/emprendimientos', emprendimientosRoutes);
+app.use('/api/eventos', eventosRoutes);
+app.use('/api/visitas', visitasRoutes);
 
 // Ruta de estado simple
 app.get('/status', (req, res) => {
