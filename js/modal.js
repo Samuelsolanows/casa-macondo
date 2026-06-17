@@ -283,4 +283,31 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
+  // ---- Registro Automático de Visitas (Sprint 4) ----
+  (function trackVisit() {
+    try {
+      const pathParts = window.location.pathname.split('/');
+      let page = pathParts[pathParts.length - 1] || 'Index.html';
+      
+      // Si la URL termina con barra, puede ser index
+      if (page === '') page = 'Index.html';
+
+      const userJson = localStorage.getItem('user');
+      const userId = userJson ? JSON.parse(userJson).id_usuario : null;
+
+      fetch('http://localhost:3000/api/visitas', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          ruta: page,
+          id_usuario: userId
+        })
+      }).catch(err => console.warn('Error recording visit:', err));
+    } catch (e) {
+      console.warn('Stats tracker error:', e);
+    }
+  })();
 });

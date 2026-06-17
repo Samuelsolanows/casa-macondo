@@ -65,15 +65,26 @@ const verifyAdmin = async (req, res, next) => {
 // POST /api/actividades - Crear una nueva actividad (Admin)
 router.post('/', verifyAdmin, async (req, res) => {
   try {
-    const { nombre, descripcion, categoria, imagen_principal, imagen_secundaria } = req.body;
+    const { nombre, descripcion, categoria, imagen_principal, imagen_secundaria, latitud, longitud } = req.body;
+    const imagen_ruta = req.body.imagen_ruta || imagen_principal;
+    const imagen_secundaria_ruta = req.body.imagen_secundaria_ruta || imagen_secundaria;
 
-    if (!nombre || !descripcion || !categoria || !imagen_principal) {
-      return res.status(400).json({ error: 'Faltan campos obligatorios (nombre, descripcion, categoria, imagen_principal).' });
+    if (!nombre || !descripcion || !categoria || !imagen_ruta) {
+      return res.status(400).json({ error: 'Faltan campos obligatorios (nombre, descripcion, categoria, imagen_ruta o imagen_principal).' });
     }
 
+    const lat = (latitud !== undefined && latitud !== null && latitud !== '') ? parseFloat(latitud) : null;
+    const lon = (longitud !== undefined && longitud !== null && longitud !== '') ? parseFloat(longitud) : null;
+
+    const titulo_detalle = nombre;
+    const subtitulo_detalle = nombre;
+    const descripcion_detalle = descripcion;
+
     const [result] = await db.query(
-      'INSERT INTO actividades (nombre, descripcion, categoria, imagen_principal, imagen_secundaria) VALUES (?, ?, ?, ?, ?)',
-      [nombre, descripcion, categoria, imagen_principal, imagen_secundaria || null]
+      `INSERT INTO actividades 
+       (nombre, descripcion, categoria, imagen_ruta, imagen_secundaria_ruta, titulo_detalle, subtitulo_detalle, descripcion_detalle, latitud, longitud) 
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [nombre, descripcion, categoria, imagen_ruta, imagen_secundaria_ruta || null, titulo_detalle, subtitulo_detalle, descripcion_detalle, lat, lon]
     );
 
     res.status(201).json({
@@ -82,8 +93,10 @@ router.post('/', verifyAdmin, async (req, res) => {
       nombre,
       descripcion,
       categoria,
-      imagen_principal,
-      imagen_secundaria
+      imagen_ruta,
+      imagen_secundaria_ruta,
+      latitud: lat,
+      longitud: lon
     });
   } catch (error) {
     console.error('Error al crear actividad:', error);
@@ -95,10 +108,12 @@ router.post('/', verifyAdmin, async (req, res) => {
 router.put('/:id', verifyAdmin, async (req, res) => {
   try {
     const { id } = req.params;
-    const { nombre, descripcion, categoria, imagen_principal, imagen_secundaria } = req.body;
+    const { nombre, descripcion, categoria, imagen_principal, imagen_secundaria, latitud, longitud } = req.body;
+    const imagen_ruta = req.body.imagen_ruta || imagen_principal;
+    const imagen_secundaria_ruta = req.body.imagen_secundaria_ruta || imagen_secundaria;
 
-    if (!nombre || !descripcion || !categoria || !imagen_principal) {
-      return res.status(400).json({ error: 'Faltan campos obligatorios (nombre, descripcion, categoria, imagen_principal).' });
+    if (!nombre || !descripcion || !categoria || !imagen_ruta) {
+      return res.status(400).json({ error: 'Faltan campos obligatorios (nombre, descripcion, categoria, imagen_ruta o imagen_principal).' });
     }
 
     // Verificar si la actividad existe
@@ -107,9 +122,14 @@ router.put('/:id', verifyAdmin, async (req, res) => {
       return res.status(404).json({ error: 'La actividad no existe.' });
     }
 
+    const lat = (latitud !== undefined && latitud !== null && latitud !== '') ? parseFloat(latitud) : null;
+    const lon = (longitud !== undefined && longitud !== null && longitud !== '') ? parseFloat(longitud) : null;
+
     await db.query(
-      'UPDATE actividades SET nombre = ?, descripcion = ?, categoria = ?, imagen_principal = ?, imagen_secundaria = ? WHERE id_actividad = ?',
-      [nombre, descripcion, categoria, imagen_principal, imagen_secundaria || null, id]
+      `UPDATE actividades 
+       SET nombre = ?, descripcion = ?, categoria = ?, imagen_ruta = ?, imagen_secundaria_ruta = ?, latitud = ?, longitud = ? 
+       WHERE id_actividad = ?`,
+      [nombre, descripcion, categoria, imagen_ruta, imagen_secundaria_ruta || null, lat, lon, id]
     );
 
     res.json({ message: 'Actividad actualizada exitosamente.' });
