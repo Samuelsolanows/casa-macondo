@@ -2,12 +2,14 @@ const mysql = require('mysql2/promise');
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '.env') });
 
+const dbName = process.env.DB_NAME || 'casamacondo';
+
 const pool = mysql.createPool({
   host: process.env.DB_HOST || 'localhost',
   user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASSWORD || '',
-  database: process.env.DB_NAME || 'casamacondo'
+  password: process.env.DB_PASSWORD || ''
 });
+
 
 const seedData = [
   {
@@ -87,7 +89,11 @@ const seedData = [
 async function run() {
   try {
     const connection = await pool.getConnection();
+    console.log(`🔄 Creando base de datos "${dbName}" si no existe...`);
+    await connection.query(`CREATE DATABASE IF NOT EXISTS \`${dbName}\``);
+    await connection.query(`USE \`${dbName}\``);
     console.log('🔄 Ejecutando migración...');
+
 
     // 1. Crear tabla de actividades si no existe
     await connection.query(`
