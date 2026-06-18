@@ -345,6 +345,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // ---- CRUD: ADMINISTRACIÓN DE ALOJAMIENTOS ----
   let allAccommodations = [];
   const accommodationsTableBody = document.getElementById('accommodationsTableBody');
+  const adminAccommodationSearch = document.getElementById('adminAccommodationSearch');
   const btnAddAccommodation = document.getElementById('btnAddAccommodation');
 
   // Modal de Alojamiento
@@ -353,6 +354,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const accommodationForm = document.getElementById('accommodationForm');
   const accommodationModalTitle = document.getElementById('accommodationModalTitle');
   const accommodationIdField = document.getElementById('accommodationIdField');
+
+  // Buscar/filtrar alojamientos
+  if (adminAccommodationSearch) {
+    adminAccommodationSearch.addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase().trim();
+      const filtered = allAccommodations.filter(aloj => 
+        aloj.nombre.toLowerCase().includes(query) ||
+        aloj.servicios.toLowerCase().includes(query) ||
+        aloj.capacidad.toString().includes(query)
+      );
+      renderAccommodationsTable(filtered);
+    });
+  }
 
   // Cargar lista de alojamientos del backend
   async function loadAccommodations() {
@@ -367,14 +381,14 @@ document.addEventListener('DOMContentLoaded', () => {
       allAccommodations = data;
       renderAccommodationsTable(allAccommodations);
     } catch (err) {
-      accommodationsTableBody.innerHTML = `<tr><td colspan="7" class="table-empty-state text-error">Error: ${err.message}</td></tr>`;
+      accommodationsTableBody.innerHTML = `<tr><td colspan="8" class="table-empty-state text-error">Error: ${err.message}</td></tr>`;
     }
   }
 
   // Renderizar la tabla de alojamientos
   function renderAccommodationsTable(list) {
     if (list.length === 0) {
-      accommodationsTableBody.innerHTML = '<tr><td colspan="7" class="table-empty-state">No se encontraron alojamientos.</td></tr>';
+      accommodationsTableBody.innerHTML = '<tr><td colspan="8" class="table-empty-state">No se encontraron alojamientos.</td></tr>';
       return;
     }
 
@@ -382,10 +396,12 @@ document.addEventListener('DOMContentLoaded', () => {
     list.forEach(aloj => {
       // Formatear precio
       const priceFormatted = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(aloj.precio_noche);
+      const firstImg = (aloj.imagenes && aloj.imagenes.length > 0) ? aloj.imagenes[0] : 'img/ofuro_1.png';
 
       const tr = document.createElement('tr');
       tr.innerHTML = `
         <td>${aloj.id_alojamiento}</td>
+        <td><img src="${firstImg}" alt="${aloj.nombre}" class="table-img" onerror="this.src='img/ofuro_1.png'" /></td>
         <td><strong>${aloj.nombre}</strong></td>
         <td>${aloj.capacidad} personas</td>
         <td>${aloj.habitaciones} habs / ${aloj.camas} camas</td>
@@ -548,12 +564,26 @@ document.addEventListener('DOMContentLoaded', () => {
   // ---- CRUD: MIS EMPRENDIMIENTOS ----
   let allVentures = [];
   const venturesTableBody = document.getElementById('venturesTableBody');
+  const adminVentureSearch = document.getElementById('adminVentureSearch');
   const btnAddVenture = document.getElementById('btnAddVenture');
   const ventureModal = document.getElementById('ventureModal');
   const closeVentureModalBtn = document.getElementById('closeVentureModalBtn');
   const ventureForm = document.getElementById('ventureForm');
   const ventureModalTitle = document.getElementById('ventureModalTitle');
   const ventureIdField = document.getElementById('ventureIdField');
+
+  // Buscar/filtrar emprendimientos
+  if (adminVentureSearch) {
+    adminVentureSearch.addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase().trim();
+      const filtered = allVentures.filter(v => 
+        v.nombre.toLowerCase().includes(query) ||
+        v.descripcion.toLowerCase().includes(query) ||
+        v.categoria.toLowerCase().includes(query)
+      );
+      renderVenturesTable(filtered);
+    });
+  }
 
   async function loadVentures() {
     try {

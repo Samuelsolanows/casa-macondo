@@ -129,6 +129,7 @@
 /* Content Area */
 .account-content-area {
   flex-grow: 1;
+  min-width: 0;
   background-color: rgba(255, 255, 255, 0.01);
   border: 1px solid rgba(243, 233, 228, 0.05);
   border-radius: 24px;
