@@ -1,6 +1,6 @@
 /**
  * activities.js
- * Maneja la carga dinámica, filtrado, búsqueda y visualización en mapa de las actividades turísticas de Casa Macondo.
+ * Maneja la carga dinámica, filtrado, búsqueda y visualización en mapa de las actividades turísticas de Bochalema 360.
  */
 
 document.addEventListener('DOMContentLoaded', () => {

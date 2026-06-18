@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
   /** Renderiza la estructura premium con maquetación alterna */
   function renderActivityDetail(activity) {
     // Cambiar dinámicamente el título de la pestaña del navegador
-    document.title = `${activity.nombre} - Casa Macondo`;
+    document.title = `${activity.nombre} - Bochalema 360`;
 
     detailContainer.innerHTML = `
       <!-- Fila 1: Imagen Izquierda, Texto Derecha -->

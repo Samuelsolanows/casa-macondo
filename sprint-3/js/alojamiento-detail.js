@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /** Render details layout */
   function renderCabinDetail(cabin) {
-    document.title = `${cabin.nombre} - Casa Macondo`;
+    document.title = `${cabin.nombre} - Bochalema 360`;
 
     const services = cabin.servicios.split(',');
 

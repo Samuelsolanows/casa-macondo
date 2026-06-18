@@ -29,7 +29,7 @@ const seedData = [
     categoria: 'Experiencias',
     imagen_ruta: 'img/fogata_main.png',
     imagen_secundaria_ruta: 'img/fogata_sec.png',
-    titulo_detalle: 'Vive la esencia de las noches en Casa Macondo',
+    titulo_detalle: 'Vive la esencia de las noches en Bochalema 360',
     descripcion: 'Esta experiencia te invita a disfrutar de una velada única bajo el cielo estrellado, rodeado de naturaleza y tranquilidad. La fogata al aire libre crea un ambiente cálido y acogedor, ideal para compartir, relajarse y conectar con el entorno rural de una manera auténtica.',
     subtitulo_detalle: '¿Qué harás en esta experiencia?',
     descripcion_detalle: 'Nos reuniremos en un espacio abierto de Bochalema para encender una fogata y disfrutar de una noche especial en medio de la naturaleza. La actividad tiene una duración aproximada de 2 a 3 horas y se adapta al ambiente y dinámica del grupo.',
@@ -131,7 +131,7 @@ async function run() {
     // 3. Verificar si ya hay registros
     const [rows] = await connection.query('SELECT COUNT(*) as count FROM actividades');
     if (rows[0].count === 0) {
-      console.log('🌱 Sembrando datos de actividades de Casa Macondo...');
+      console.log('🌱 Sembrando datos de actividades de Bochalema 360...');
       for (const item of seedData) {
         await connection.query(
           `INSERT INTO actividades 
@@ -241,10 +241,10 @@ async function run() {
       const seedEventos = [
         {
           titulo: 'Feria del Café Especial',
-          descripcion: 'Disfruta de una jornada llena de aromas y sabores. Cata de café de la región, charlas con productores locales y exhibición de barismo en Casa Macondo.',
+          descripcion: 'Disfruta de una jornada llena de aromas y sabores. Cata de café de la región, charlas con productores locales y exhibición de barismo en Bochalema 360.',
           fecha: '2026-08-20',
           hora: '09:00:00',
-          lugar: 'Casa Macondo',
+          lugar: 'Bochalema 360',
           organizador: 'Asocafé Bochalema',
           imagen_ruta: 'img/turismo_sec.png'
         },

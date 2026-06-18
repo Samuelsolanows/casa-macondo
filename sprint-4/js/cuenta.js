@@ -1,6 +1,6 @@
 /**
  * cuenta.js
- * Maneja la lógica de la página de Perfil y Panel de Administración de Casa Macondo.
+ * Maneja la lógica de la página de Perfil y Panel de Administración de Bochalema 360.
  * Realiza peticiones al API de backend para actualizar perfil y realizar operaciones CRUD.
  */
 
