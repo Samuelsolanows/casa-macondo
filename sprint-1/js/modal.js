@@ -22,6 +22,24 @@ document.addEventListener('DOMContentLoaded', () => {
   const loginForm      = document.getElementById('loginForm');
   const footerRegisterBtn = document.getElementById('footerRegisterBtn');
 
+  // ---- Lógica de Sesión ----
+  function updateHeaderSession() {
+    const userJson = localStorage.getItem('user');
+    const headerBtn = document.querySelector('.nav-right .btn-reservar');
+    if (!headerBtn) return;
+
+    if (userJson) {
+      headerBtn.textContent = 'Cerrar Sesión';
+      headerBtn.style.backgroundColor = '#7a1d1d';
+    } else {
+      headerBtn.textContent = 'Iniciar Sesión';
+      headerBtn.style.backgroundColor = '';
+    }
+  }
+
+  // Ejecutar al cargar la página
+  updateHeaderSession();
+
   // ---- Funciones principales ----
 
   /** Abre la ventana emergente y muestra la vista de Registro por defecto. */
@@ -61,11 +79,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ---- Eventos de apertura / cierre ----
 
-  // Botón "Reservar" en la cabecera → abrir modal en vista Registro
+  // Botón "Reservar" en la cabecera → abrir modal en vista Registro, o cerrar sesión si ya está logueado
   if (btnReservar) {
     btnReservar.addEventListener('click', (e) => {
       e.preventDefault();
-      openModal();
+      const userJson = localStorage.getItem('user');
+      if (userJson) {
+        localStorage.removeItem('user');
+        updateHeaderSession();
+        console.log('Sesión cerrada');
+      } else {
+        openModal();
+      }
     });
   }
 
@@ -212,7 +237,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Cerrar el modal tras 1.5 segundos
         setTimeout(() => {
           closeModal();
-          // Opcional: Actualizar interfaz para reflejar sesión (por ejemplo, cambiar el botón Reservar o saludar)
+          updateHeaderSession();
           console.log('Usuario autenticado:', data.user);
         }, 1500);
 
