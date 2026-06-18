@@ -1,6 +1,6 @@
-# Casa Macondo - Bochalema
+# Bochalema 360 - Bochalema
 
-En **Casa Macondo** impulsamos el sector turístico de Bochalema, Norte de Santander, mostrando sus maravillosos atractivos naturales, actividades al aire libre, y ofreciendo una experiencia premium de hospedaje en nuestras exclusivas cabañas ecológicas. 
+En **Bochalema 360** impulsamos el sector turístico de Bochalema, Norte de Santander, mostrando sus maravillosos atractivos naturales, actividades al aire libre, y ofreciendo una experiencia premium de hospedaje en nuestras exclusivas cabañas ecológicas. 
 
 Este proyecto es una aplicación web completa con un backend en **Node.js/Express** y base de datos **MySQL**, diseñada bajo un concepto visual moderno, elegante y responsivo que destaca por su estética de lujo y fluidez de interacción.
 
@@ -42,7 +42,7 @@ Este proyecto es una aplicación web completa con un backend en **Node.js/Expres
 ```
 CasaMacondo/
 │
-├── Index.html                  # Página de bienvenida e inicio de Casa Macondo
+├── Index.html                  # Página de bienvenida e inicio de Bochalema 360
 ├── actividades.html            # Galería de atractivos turísticos y experiencias
 ├── actividad.html              # Vista detallada de una actividad individual
 ├── alojamientos.html           # Catálogo de cabañas y eco-villas disponibles

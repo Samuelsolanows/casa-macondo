@@ -1,7 +1,7 @@
 {
   "name": "casa-macondo-backend",
   "version": "1.0.0",
-  "description": "Servidor backend REST API para Casa Macondo - Autenticación con MySQL",
+  "description": "Servidor backend REST API para Bochalema 360 - Autenticación con MySQL",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

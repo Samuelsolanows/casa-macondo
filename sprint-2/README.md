@@ -1,6 +1,6 @@
-# Casa Macondo - Bochalema
+# Bochalema 360 - Bochalema
 
-En **Casa Macondo** impulsamos el sector turístico del municipio de Bochalema, donde mostramos sus atractivos turísticos naturales, comercio local y cultura. Además, te ofrecemos la mejor experiencia de hospedaje para que no tengas que preocuparte por el alojamiento, ya que contamos con una cabaña completamente equipada para ti y tus acompañantes.
+En **Bochalema 360** impulsamos el sector turístico del municipio de Bochalema, donde mostramos sus atractivos turísticos naturales, comercio local y cultura. Además, te ofrecemos la mejor experiencia de hospedaje para que no tengas que preocuparte por el alojamiento, ya que contamos con una cabaña completamente equipada para ti y tus acompañantes.
 
 ---
 

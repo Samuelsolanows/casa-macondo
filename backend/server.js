@@ -28,7 +28,7 @@ app.use('/api/visitas', visitasRoutes);
 
 // Ruta de estado simple
 app.get('/status', (req, res) => {
-  res.json({ status: 'online', message: 'Servidor Casa Macondo funcionando correctamente.' });
+  res.json({ status: 'online', message: 'Servidor Bochalema 360 funcionando correctamente.' });
 });
 
 // Arrancar servidor
