@@ -186,11 +186,19 @@
             </button>
           </div>
 
+          <div class="search-filter-row">
+            <div class="search-input-wrapper">
+              <svg class="search-icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              <input type="text" id="adminAccommodationSearch" placeholder="Buscar alojamiento por nombre, capacidad o servicios..." />
+            </div>
+          </div>
+
           <div class="table-container">
             <table class="crud-table" id="accommodationsTable">
               <thead>
                 <tr>
                   <th>ID</th>
+                  <th>Imagen</th>
                   <th>Nombre</th>
                   <th>Capacidad</th>
                   <th>Habitaciones/Camas</th>
@@ -202,7 +210,7 @@
               <tbody id="accommodationsTableBody">
                 <!-- Se llenará dinámicamente -->
                 <tr>
-                  <td colspan="7" class="table-empty-state">Cargando alojamientos...</td>
+                  <td colspan="8" class="table-empty-state">Cargando alojamientos...</td>
                 </tr>
               </tbody>
             </table>
@@ -220,6 +228,13 @@
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
               Agregar Emprendimiento
             </button>
+          </div>
+
+          <div class="search-filter-row">
+            <div class="search-input-wrapper">
+              <svg class="search-icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              <input type="text" id="adminVentureSearch" placeholder="Buscar emprendimiento por nombre, categoría o descripción..." />
+            </div>
           </div>
 
           <div class="table-container">
